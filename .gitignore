@@ -1,0 +1,6 @@
+# Claude Code local settings (machine-specific; keep launch.json, ignore local settings)
+.claude/settings.local.json
+
+# OS junk
+Thumbs.db
+.DS_Store

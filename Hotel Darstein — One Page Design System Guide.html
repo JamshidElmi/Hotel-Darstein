@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Darstein — One Page Design System Guide</title>
+  <style>
+    :root {
+      --burgundy: #8B0E23;
+      --burgundy-dark: #5F0717;
+      --ivory: #F7F2EA;
+      --cream: #FFF9F0;
+      --champagne: #C8A46B;
+      --lake: #4E7D85;
+      --sage: #8B9A83;
+      --taupe: #C9B9A3;
+      --charcoal: #1E1B18;
+      --muted: #6E625A;
+      --soft-line: rgba(30, 27, 24, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 10px;
+      --shadow: 0 18px 45px rgba(30, 27, 24, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--charcoal);
+      font-family: Inter, Avenir, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0 70px;
+    }
+
+    .hero {
+      background:
+        linear-gradient(135deg, rgba(95, 7, 23, .92), rgba(30, 27, 24, .82)),
+        radial-gradient(circle at 85% 10%, rgba(200,164,107,.35), transparent 35%);
+      color: var(--cream);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -100px;
+      width: 420px;
+      height: 220px;
+      border: 2px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+      transform: rotate(-12deg);
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-box {
+      width: 150px;
+      min-height: 76px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+    }
+
+    .logo-box img {
+      max-width: 100%;
+      max-height: 56px;
+      object-fit: contain;
+    }
+
+    .eyebrow {
+      color: var(--champagne);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.08;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-size: clamp(42px, 7vw, 86px);
+      letter-spacing: -0.045em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero p {
+      max-width: 730px;
+      font-size: 19px;
+      color: rgba(255,249,240,.86);
+      margin: 24px 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: .02em;
+    }
+
+    .btn-primary {
+      background: var(--champagne);
+      color: var(--charcoal);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,.35);
+      color: var(--cream);
+    }
+
+    .section {
+      margin-top: 32px;
+      background: rgba(255,249,240,.72);
+      border: 1px solid var(--soft-line);
+      border-radius: var(--radius-lg);
+      padding: 34px;
+    }
+
+    .section.dark {
+      background: var(--charcoal);
+      color: var(--cream);
+      border: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: clamp(30px, 4vw, 48px);
+      letter-spacing: -0.035em;
+    }
+
+    .section-intro {
+      max-width: 560px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .dark .section-intro {
+      color: rgba(255,249,240,.72);
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--soft-line);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      min-height: 150px;
+    }
+
+    .dark .card {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      letter-spacing: -0.025em;
+    }
+
+    .card p, .card li {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .dark .card p, .dark .card li {
+      color: rgba(255,249,240,.72);
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .swatch {
+      border-radius: 18px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid var(--soft-line);
+    }
+
+    .swatch-color {
+      height: 92px;
+    }
+
+    .swatch-info {
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    .swatch-info strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .type-sample {
+      padding: 28px;
+      border-radius: var(--radius-md);
+      background: var(--cream);
+      border: 1px solid var(--soft-line);
+    }
+
+    .display-type {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(36px, 5vw, 64px);
+      letter-spacing: -0.045em;
+      line-height: 1.02;
+      margin-bottom: 18px;
+    }
+
+    .body-type {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .pill-list li {
+      padding: 9px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--soft-line);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .dark .pill-list li {
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.12);
+      color: rgba(255,249,240,.78);
+    }
+
+    .dos-donts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .do {
+      border-left: 5px solid var(--lake);
+    }
+
+    .dont {
+      border-left: 5px solid var(--burgundy);
+    }
+
+    .component-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .mock-hero {
+      min-height: 320px;
+      border-radius: var(--radius-md);
+      padding: 30px;
+      background:
+        linear-gradient(180deg, rgba(30,27,24,.25), rgba(30,27,24,.78)),
+        linear-gradient(135deg, #92755C, #314E56);
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .mock-hero h3 {
+      font-size: 38px;
+      max-width: 420px;
+    }
+
+    .mock-panel {
+      border-radius: var(--radius-md);
+      background: var(--cream);
+      padding: 28px;
+      border: 1px solid var(--soft-line);
+    }
+
+    .timeline {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 16px 16px 16px 58px;
+      background: rgba(255,255,255,.64);
+      border: 1px solid var(--soft-line);
+      border-radius: 18px;
+    }
+
+    .timeline-item::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--burgundy);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .section {
+        padding: 28px;
+      }
+
+      .grid-2, .grid-3, .grid-4, .swatches, .dos-donts, .component-row {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        display: block;
+      }
+
+      .section-intro {
+        margin-top: 12px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+      .hero, .section {
+        break-inside: avoid;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="brand-row">
+        <div class="logo-box">
+          <img src='data:image/png;base64,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' alt='Hotel Darstein logo' />
+        </div>
+        <div>
+          <div class="eyebrow">Design System Guide</div>
+          <strong>Hotel Darstein — Lakeside Wedding Elegance</strong>
+        </div>
+      </div>
+      <h1>A premium lakeside wedding hotel, designed around romance, calm luxury, and complete celebration.</h1>
+      <p>
+        The website should feel like a refined wedding destination at the Blue Adriatic: emotional first, practical second.
+        It should sell the dream of a lakeside ceremony, then support that dream with hotel rooms, catering, planning, restaurant service, and event infrastructure.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Primary CTA: Request Wedding Viewing</a>
+        <a class="btn btn-secondary" href="#">Secondary CTA: Explore Wedding Options</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Brand Personality</h2>
+        <p class="section-intro">Use these traits to judge every design decision. The site should never feel like a generic booking engine.</p>
+      </div>
+      <ul class="pill-list">
+        <li>Romantic</li>
+        <li>Lakeside</li>
+        <li>Warm luxury</li>
+        <li>Elegant</li>
+        <li>Natural</li>
+        <li>Trustworthy</li>
+        <li>Full-service</li>
+        <li>Wedding-first</li>
+        <li>Calm</li>
+        <li>Timeless</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Color Direction</h2>
+        <p class="section-intro">The palette is inspired by the burgundy logo, lake setting, champagne wedding atmosphere, and warm hotel hospitality.</p>
+      </div>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#8B0E23"></div><div class="swatch-info"><strong>Burgundy</strong>#8B0E23<br>Primary CTA, accents</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#5F0717"></div><div class="swatch-info"><strong>Deep Wine</strong>#5F0717<br>Dark hero overlays</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#F7F2EA"></div><div class="swatch-info"><strong>Warm Ivory</strong>#F7F2EA<br>Main background</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#C8A46B"></div><div class="swatch-info"><strong>Champagne</strong>#C8A46B<br>Premium highlights</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#4E7D85"></div><div class="swatch-info"><strong>Lake Teal</strong>#4E7D85<br>Water/nature accent</div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#1E1B18"></div><div class="swatch-info"><strong>Charcoal</strong>#1E1B18<br>Text and dark sections</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Typography Feel</h2>
+        <p class="section-intro">Use a refined editorial contrast: elegant headings for emotion, clean body type for clarity and trust.</p>
+      </div>
+      <div class="type-sample">
+        <div class="display-type">Your Dream Wedding Directly on the Blue Adriatic</div>
+        <div class="body-type">
+          Celebrate your ceremony, reception, dinner, party, and overnight stay in one romantic lakeside destination.
+          Text should be warm, clear, and confident — never generic or overly sales-heavy.
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="section-header">
+        <h2>Homepage Design Principle</h2>
+        <p class="section-intro">The homepage should be built like a wedding story, not a list of hotel services.</p>
+      </div>
+      <div class="grid grid-4">
+        <div class="card"><h3>01. Dream</h3><p>Open with cinematic wedding/lake imagery and a clear emotional promise.</p></div>
+        <div class="card"><h3>02. Place</h3><p>Show the wedding island, lake, terrace, and indoor/outdoor celebration spaces.</p></div>
+        <div class="card"><h3>03. Trust</h3><p>Explain planning support, catering, guest rooms, parking, and complete event service.</p></div>
+        <div class="card"><h3>04. Convert</h3><p>Guide couples toward a viewing, inquiry, or individual wedding offer.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Core Components</h2>
+        <p class="section-intro">These components should define the visual language of the website.</p>
+      </div>
+      <div class="component-row">
+        <div class="mock-hero">
+          <div class="eyebrow">Wedding Location by the Lake</div>
+          <h3>From ceremony to celebration, everything in one place.</h3>
+        </div>
+        <div class="mock-panel">
+          <h3>Signature Cards</h3>
+          <p>Use warm cards for wedding packages, quick facts, rooms, catering, and secondary services. Cards should feel soft, elegant, and spacious.</p>
+          <br>
+          <a class="btn btn-primary" href="#">Request Individual Offer</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Homepage Section Order</h2>
+        <p class="section-intro">Use this order as the recommended one-page structure for the wedding-first homepage.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item"><strong>Hero:</strong> Dream wedding directly on the Blue Adriatic with inquiry CTA.</div>
+        <div class="timeline-item"><strong>Wedding Island:</strong> The signature emotional differentiator.</div>
+        <div class="timeline-item"><strong>Why Darstein:</strong> Lake, wedding island, hotel rooms, catering, planning, location.</div>
+        <div class="timeline-item"><strong>Wedding Day Flow:</strong> Arrival, ceremony, reception, photos, dinner, party, overnight stay.</div>
+        <div class="timeline-item"><strong>Spaces & Weather Confidence:</strong> Outdoor romance plus indoor event security.</div>
+        <div class="timeline-item"><strong>Menus & Packages:</strong> Food, buffet, drinks, trial dinner, planning support.</div>
+        <div class="timeline-item"><strong>Guest Accommodation:</strong> Rooms, breakfast, parking, and easy overnight stays.</div>
+        <div class="timeline-item"><strong>Gallery & Testimonials:</strong> Real emotion, social proof, and wedding inspiration.</div>
+        <div class="timeline-item"><strong>Inquiry Form:</strong> Date, guest count, ceremony type, contact details.</div>
+        <div class="timeline-item"><strong>Secondary Services:</strong> Restaurant, hotel stays, conferences, private events, club, vouchers.</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Photography Direction</h2>
+        <p class="section-intro">Photography should carry the emotion of the brand. Use warm, cinematic, natural images.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card"><h3>Must Show</h3><p>Couple by the lake, wedding island, terrace reception, dinner setup, food, rooms, party atmosphere, exterior lake views.</p></div>
+        <div class="card"><h3>Mood</h3><p>Golden hour, soft shadows, water reflections, natural smiles, candlelight, floral details, warm hospitality.</p></div>
+        <div class="card"><h3>Avoid</h3><p>Cold corporate rooms, empty generic spaces, harsh lighting, over-saturated colors, stock-photo feeling.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Buttons & Conversion</h2>
+        <p class="section-intro">Every major section should gently push users toward a wedding inquiry.</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Primary CTA</h3>
+          <p>Use for: Request Wedding Viewing, Send Wedding Inquiry, Request Individual Offer.</p>
+        </div>
+        <div class="card">
+          <h3>Secondary CTA</h3>
+          <p>Use for: Explore Wedding Options, View Rooms, Discover Restaurant, See Event Spaces.</p>
+        </div>
+        <div class="card">
+          <h3>Microcopy</h3>
+          <p>Use helpful reassurance: “Tell us your date and guest count — our team will prepare an individual offer.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Do & Don’t</h2>
+      </div>
+      <div class="dos-donts">
+        <div class="card do">
+          <h3>Do</h3>
+          <ul>
+            <li>Lead with weddings and lake emotion.</li>
+            <li>Use the burgundy logo identity as a premium accent.</li>
+            <li>Design large, calm, editorial sections.</li>
+            <li>Make inquiry CTAs visible throughout the page.</li>
+            <li>Show complete wedding-day convenience.</li>
+          </ul>
+        </div>
+        <div class="card dont">
+          <h3>Don’t</h3>
+          <ul>
+            <li>Make the homepage feel like a generic hotel booking site.</li>
+            <li>Let conferences or restaurant content compete with weddings.</li>
+            <li>Use cold corporate colors or crowded layouts.</li>
+            <li>Hide the inquiry form at the very end only.</li>
+            <li>Rely on text when photography can sell the feeling better.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="section-header">
+        <h2>Final Creative Direction</h2>
+      </div>
+      <p class="section-intro">
+        Design Hotel Darstein as a premium wedding venue with hotel comfort behind it. The first impression should be:
+        “This is where we can have a beautiful lakeside wedding, celebrate with our guests, and stay overnight without stress.”
+      </p>
+    </section>
+
+    <p class="footer-note">Hotel Darstein Design System Guide — one-page reference for homepage and landing page design.</p>
+  </main>
+</body>
+</html>
