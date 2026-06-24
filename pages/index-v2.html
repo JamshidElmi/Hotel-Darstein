@@ -47,7 +47,7 @@
   --serif:"Cormorant Garamond", "Times New Roman", Georgia, serif;
   --sans:"Jost", "Segoe UI", system-ui, -apple-system, sans-serif;
 
-  --wrap:1240px;
+  --wrap:1400px;
   --gut:clamp(20px,5vw,64px);
   --r:18px;
   --shadow:0 24px 60px -28px rgba(40,12,20,.4);
@@ -199,7 +199,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 @keyframes slowzoom{from{transform:scale(1.08)}to{transform:scale(1)}}
 .hero-bg::after{content:"";position:absolute;inset:0;
   background:linear-gradient(100deg,rgba(58,12,22,.78) 0%,rgba(58,12,22,.5) 38%,rgba(40,10,18,.18) 70%,rgba(40,10,18,.32) 100%);}
-.hero-inner{padding:60px 0 200px;max-width:760px}
+.hero-inner{padding:60px 0 90px;max-width:760px}
 .hero .eyebrow{color:var(--gold-pale)}
 .hero .eyebrow::before{filter:var(--orn-champ)}
 .hero h1{font-size:clamp(2.9rem,7vw,5.6rem);font-weight:500;letter-spacing:.5px;margin:22px 0 0;line-height:1.02}
@@ -213,21 +213,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .scroll-hint .mouse{width:22px;height:36px;border:1.5px solid rgba(255,255,255,.5);border-radius:14px;position:relative}
 .scroll-hint .mouse::after{content:"";position:absolute;top:7px;left:50%;transform:translateX(-50%);width:3px;height:7px;border-radius:3px;background:var(--gold-2);animation:scrolldot 1.6s infinite}
 @keyframes scrolldot{0%{opacity:0;top:6px}40%{opacity:1}80%{opacity:0;top:16px}}
-@media(max-width:560px){.hero-inner{padding-bottom:160px}.scroll-hint{display:none}}
-
-/* inquiry quick bar */
-.quickbar{position:relative;z-index:5;margin-top:-92px}
-.quickbar-card{background:var(--white);border-radius:18px;box-shadow:var(--shadow);padding:14px;display:grid;
-  grid-template-columns:repeat(4,1fr) auto;gap:8px;align-items:stretch;border:1px solid rgba(255,255,255,.6)}
-.qb-field{display:flex;flex-direction:column;gap:3px;padding:12px 18px;border-right:1px solid var(--line)}
-.qb-field:nth-child(4){border-right:0}
-.qb-field label{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink);font-weight:600}
-.qb-field input,.qb-field select{border:0;background:none;font-family:var(--sans);font-size:14.5px;color:var(--ink);font-weight:500;padding:2px 0;outline:none;width:100%}
-.qb-field select{appearance:none;cursor:pointer}
-.qb-btn{align-self:center;height:100%}
-.qb-btn .btn{height:100%;border-radius:12px;width:100%;justify-content:center}
-@media(max-width:920px){.quickbar-card{grid-template-columns:1fr 1fr}.qb-field{border-right:0;border-bottom:1px solid var(--line)}.qb-field:nth-child(3),.qb-field:nth-child(4){border-bottom:0}.qb-btn{grid-column:1/-1;margin-top:6px}}
-@media(max-width:560px){.quickbar-card{grid-template-columns:1fr}.qb-field{border-bottom:1px solid var(--line)!important}.qb-field:last-of-type{border-bottom:0!important}}
+@media(max-width:560px){.hero-inner{padding-bottom:60px}.scroll-hint{display:none}}
 
 /* ============================ INTRO / ABOUT ============================ */
 .intro{background:var(--ivory)}
@@ -246,12 +232,19 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .intro-points li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink)}
 .intro-points svg{width:18px;height:18px;stroke:var(--lake);fill:none;stroke-width:2;flex-shrink:0;margin-top:2px}
 @media(max-width:480px){.intro-points{grid-template-columns:1fr}}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:clamp(50px,7vw,80px);
-  border-top:1px solid var(--line);padding-top:46px}
-.stat{text-align:center}
-.stat b{font-family:var(--serif);font-size:clamp(2.4rem,4vw,3.2rem);color:var(--burgundy);line-height:1;display:block}
-.stat span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:10px;display:block}
-@media(max-width:880px){.intro-grid{grid-template-columns:1fr;gap:60px}.intro-media{max-width:460px}.stats{grid-template-columns:1fr 1fr;gap:34px 20px}.intro-media .badge{right:0}}
+/* stats = dark wine panel ("Design 3"): deep-wine gradient, champagne figures + ornament, hairline dividers */
+.stats{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(50px,7vw,80px);
+  border-radius:24px;overflow:hidden;background:linear-gradient(165deg,var(--burgundy-3),var(--burgundy-deep));
+  box-shadow:var(--shadow);padding:clamp(62px,8vw,88px) clamp(24px,4vw,52px) clamp(44px,6vw,64px)}
+.stats::before{content:"";position:absolute;left:50%;top:30px;transform:translateX(-50%);width:240px;height:22px;
+  background:url("../Vintage ornament PNG/New/center_scroll_thin_line_divider.webp") center/contain no-repeat;
+  filter:var(--orn-champ);opacity:.9}
+.stat{text-align:center;padding:0 18px;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:1px;
+  background:linear-gradient(transparent,rgba(216,189,138,.55),transparent)}
+.stat b{font-family:var(--serif);font-weight:600;font-size:clamp(2.4rem,4vw,3.3rem);color:var(--gold-2);line-height:1;display:block}
+.stat span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:14px;display:block;line-height:1.5}
+@media(max-width:880px){.intro-grid{grid-template-columns:1fr;gap:60px}.intro-media{max-width:460px}.stats{grid-template-columns:1fr 1fr;gap:40px 0;padding-top:clamp(58px,13vw,88px)}.stat:nth-child(3)::before{display:none}.intro-media .badge{right:0}}
 
 /* ============================ ISLAND FEATURE ============================ */
 .island{position:relative;color:#fff;overflow:hidden}
@@ -274,8 +267,8 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
 .why-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:38px 32px;transition:.4s var(--ease);position:relative;overflow:hidden;box-shadow:var(--shadow-sm)}
 .why-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--burgundy),var(--burgundy-3));opacity:0;transition:.4s;z-index:0}
-.why-card::after{content:"";position:absolute;right:0;bottom:0;width:92px;height:92px;background:url("../Vintage ornament PNG/New/large_floral_scroll_corner.webp") center/contain no-repeat;transform:rotate(180deg);opacity:.4;pointer-events:none;z-index:0}
-.why-card.feat::after{opacity:.5}
+.why-card::after{content:"";position:absolute;right:14px;bottom:14px;width:64px;height:64px;background:url("../Vintage ornament PNG/New/large_floral_scroll_corner.webp") center/contain no-repeat;opacity:.5;filter:var(--orn-champ);pointer-events:none;z-index:0}
+.why-card.feat::after{opacity:.6}
 .why-card>*{position:relative;z-index:1}
 /* hover = subtle lift + champagne border (does NOT fill burgundy) so the one featured card stays the anchor */
 .why-card:hover{transform:translateY(-6px);border-color:var(--champagne)}
@@ -317,47 +310,73 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .lightbox .lb-nav.prev{left:24px;top:50%}
 .lightbox .lb-nav.next{right:24px;top:50%}
 
-/* ============================ JOURNEY ============================ */
+/* ============================ JOURNEY (sticky photo synced to scroll + progress rail) ============================ */
 .journey{background:var(--cream)}
-.timeline{margin-top:56px;display:grid;gap:0}
-.tl-row{display:grid;grid-template-columns:1fr 120px 1fr;align-items:center;gap:0}
-.tl-media{overflow:hidden;border-radius:var(--r);box-shadow:var(--shadow-sm)}
-.tl-media img{aspect-ratio:16/10;object-fit:cover;width:100%;transition:transform .9s var(--ease)}
-.tl-media:hover img{transform:scale(1.06)}
-.tl-mid{display:flex;flex-direction:column;align-items:center;align-self:stretch;position:relative}
-.tl-mid::before{content:"";position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(var(--gold-pale),var(--cream-2))}
-.tl-dot{width:54px;height:54px;border-radius:50%;background:var(--white);border:2px solid var(--gold);color:var(--burgundy);
-  display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.3rem;font-weight:600;z-index:2;box-shadow:var(--shadow-sm)}
-.tl-text{padding:34px clamp(20px,4vw,56px)}
-.tl-text .time{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-ink);font-weight:600}
-.tl-text h3{font-size:1.9rem;margin:10px 0 12px}
-.tl-text p{color:var(--muted);margin:0;font-size:15px}
-.tl-row:nth-child(even) .tl-media{order:3}
-.tl-row:nth-child(even) .tl-text{order:1;text-align:right}
-.tl-row:nth-child(even) .tl-mid{order:2}
+.timeline{display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(34px,5vw,76px);align-items:start;margin-top:56px}
+.tl-stage{position:sticky;top:100px;height:min(600px,82vh);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.tl-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .8s var(--ease),transform 1.5s var(--ease)}
+.tl-stage img.on{opacity:1;transform:scale(1)}
+.tl-stage::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 46%,rgba(40,10,18,.72));pointer-events:none}
+.tl-cap{position:absolute;left:28px;bottom:30px;z-index:2;color:#fff}
+.tl-cap .now{display:inline-block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-2);border:1px solid rgba(216,189,138,.5);border-radius:30px;padding:4px 11px;margin-bottom:12px}
+.tl-cap b{display:block;font-family:var(--serif);font-size:2.9rem;line-height:1;color:#fff}
+.tl-cap .ct{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-2)}
+.tl-pbar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.22);z-index:2}
+.tl-pbar i{display:block;height:100%;width:12.5%;background:linear-gradient(90deg,var(--gold-2),var(--gold));transition:width .55s var(--ease)}
+.tl-steps{position:relative;padding-left:54px;--sp:clamp(26px,5.2vh,58px)}
+.tl-steps::before{content:"";position:absolute;left:11px;top:18px;bottom:24px;width:2px;background:rgba(123,90,34,.2)}
+.tl-steps::after{content:"";position:absolute;left:11px;top:18px;width:2px;height:var(--fill,0px);background:linear-gradient(var(--gold),var(--burgundy));transition:height .5s var(--ease)}
+.tl-step{position:relative;padding:var(--sp) 0;border-bottom:1px solid var(--line)}
+.tl-step:first-child{padding-top:12px}
+.tl-step:last-child{border-bottom:0}
+.js .tl-step{opacity:.42;transition:opacity .45s var(--ease)}
+.js .tl-step.active{opacity:1}
+.tl-dot{position:absolute;left:-51px;top:calc(var(--sp) + 3px);width:18px;height:18px;border-radius:50%;background:var(--ivory);border:2px solid var(--gold);transition:.45s var(--ease);z-index:2}
+.tl-step:first-child .tl-dot{top:15px}
+.tl-step.on .tl-dot{background:var(--burgundy);border-color:var(--burgundy)}
+.tl-step.active .tl-dot{background:var(--burgundy);border-color:var(--burgundy);box-shadow:0 0 0 6px rgba(139,14,35,.14);transform:scale(1.14)}
+.tl-step .time{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-ink);font-weight:600}
+.tl-step h3{font-size:clamp(1.6rem,2.6vw,2.3rem);margin:9px 0 11px;transition:color .4s var(--ease)}
+.tl-step.active h3{color:var(--burgundy)}
+.tl-step p{color:var(--muted);margin:0;font-size:14.5px;line-height:1.65;max-width:430px}
 @media(max-width:860px){
-  .tl-row{grid-template-columns:60px 1fr;gap:0}
-  .tl-media{order:3!important;grid-column:2;margin-bottom:10px}
-  .tl-text{order:2!important;text-align:left!important;grid-column:2;padding:6px 0 30px}
-  .tl-mid{order:1!important;grid-column:1;grid-row:1/span 2}
-  .tl-dot{width:46px;height:46px}
+  .timeline{grid-template-columns:1fr;gap:0}
+  .tl-stage{position:static;height:46vh;min-height:280px;margin-bottom:28px}
+  .tl-steps{padding-left:46px;--sp:clamp(22px,4vh,40px)}
+  .tl-dot{left:-43px}
 }
 
-/* ============================ CEREMONY OPTIONS ============================ */
+/* ============================ CEREMONY OPTIONS (expanding accordion) ============================ */
 .ceremony{background:var(--ivory)}
 .ceremony .lead{color:var(--muted)}
-.cer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:54px}
-.cer-card{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/4;display:flex;align-items:flex-end}
-.cer-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
-.cer-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(23,20,15,.9))}
-.cer-card:hover img{transform:scale(1.08)}
-.cer-body{position:relative;z-index:2;padding:28px 24px}
-.cer-body .num{font-size:12px;letter-spacing:.2em;color:var(--gold-2);font-weight:600}
-.cer-body h3{font-size:1.55rem;margin:8px 0 8px}
-.cer-body p{font-size:13.5px;color:rgba(255,255,255,.78);margin:0;max-height:0;opacity:0;overflow:hidden;transition:.5s var(--ease)}
-.cer-card:hover .cer-body p{max-height:120px;opacity:1;margin-top:4px}
-@media(max-width:880px){.cer-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.cer-grid{grid-template-columns:1fr}}
+.cer-accordion{display:flex;gap:14px;margin-top:54px;height:clamp(440px,56vw,580px)}
+.cer-panel{position:relative;flex:1 1 0;min-width:0;border-radius:var(--r);overflow:hidden;cursor:pointer;
+  background:var(--cer-img) center/cover no-repeat;display:flex;align-items:flex-end;
+  transition:flex-grow .6s var(--ease)}
+.cer-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,20,15,.04) 32%,rgba(23,20,15,.82));transition:background .5s var(--ease)}
+.cer-num{position:absolute;top:22px;left:24px;z-index:3;font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--gold-2);text-shadow:0 2px 14px rgba(0,0,0,.55)}
+.cer-spine{position:absolute;left:50%;bottom:30px;z-index:3;writing-mode:vertical-rl;transform:translateX(-50%) rotate(180deg);
+  font-family:var(--serif);font-size:1.5rem;color:#fff;white-space:nowrap;letter-spacing:.02em;text-shadow:0 2px 14px rgba(0,0,0,.55);transition:opacity .35s var(--ease)}
+.cer-reveal{position:relative;z-index:3;padding:30px 30px 32px;max-width:440px;opacity:0;transform:translateY(12px);transition:opacity .45s var(--ease) .08s,transform .45s var(--ease) .08s}
+.cer-reveal h3{font-size:clamp(1.6rem,2.4vw,2.15rem);color:#fff;margin:0 0 10px}
+.cer-reveal p{font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.86);margin:0}
+.cer-panel.is-open{flex-grow:3.4}
+.cer-panel.is-open::after{background:linear-gradient(180deg,rgba(23,20,15,.12) 18%,rgba(58,12,22,.86))}
+.cer-panel.is-open .cer-spine{opacity:0}
+.cer-panel.is-open .cer-reveal{opacity:1;transform:none}
+.cer-panel:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}
+/* no-JS fallback: expand on hover */
+html:not(.js) .cer-panel:hover{flex-grow:3.4}
+html:not(.js) .cer-panel:hover::after{background:linear-gradient(180deg,rgba(23,20,15,.12) 18%,rgba(58,12,22,.86))}
+html:not(.js) .cer-panel:hover .cer-spine{opacity:0}
+html:not(.js) .cer-panel:hover .cer-reveal{opacity:1;transform:none}
+@media(max-width:780px){
+  .cer-accordion{flex-direction:column;height:auto;gap:12px}
+  .cer-panel{flex:none;height:188px}
+  .cer-spine{display:none}
+  .cer-panel::after{background:linear-gradient(180deg,rgba(23,20,15,.12) 18%,rgba(58,12,22,.86))}
+  .cer-reveal{opacity:1;transform:none}
+}
 
 /* ============================ SPACES (alternating) ============================ */
 .spaces{background:var(--cream)}
@@ -393,7 +412,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .offers{background:var(--cream)}
 .offers-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(34px,5vw,68px);margin-top:54px;align-items:center}
 .offer-list{display:grid;gap:14px}
-.offer{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;cursor:pointer;transition:.35s var(--ease);text-align:left;width:100%;font-family:inherit}
+.offer{display:grid;grid-template-columns:auto 1fr auto;gap:0 18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;cursor:pointer;transition:.35s var(--ease);text-align:left;width:100%;font-family:inherit}
 .offer:hover,.offer.on{border-color:var(--gold);box-shadow:var(--shadow-sm)}
 .offer.on{background:linear-gradient(135deg,#fff,#fbf6ea)}
 .offer .onum{font-family:var(--serif);font-size:1.7rem;color:var(--gold-ink);line-height:1}
@@ -402,8 +421,11 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .offer .o-price{text-align:right;white-space:nowrap}
 .offer .o-price b{font-family:var(--serif);font-size:1.45rem;color:var(--burgundy);display:block;line-height:1.1}
 .offer .o-price small{font-size:11px;color:var(--muted);letter-spacing:.04em}
-.offer-incl{display:none;grid-column:1/-1;margin:4px 0 0;padding-top:14px;border-top:1px solid var(--line);list-style:none;flex-wrap:wrap;gap:9px 18px}
-.offer.on .offer-incl{display:flex}
+/* smooth expand/collapse: animate grid row 0fr→1fr to the exact content height, with an opacity fade */
+.offer-more{grid-column:1/-1;display:grid;grid-template-rows:minmax(0,0fr);transition:grid-template-rows .45s var(--ease)}
+.offer.on .offer-more{grid-template-rows:minmax(0,1fr)}
+.offer-incl{overflow:hidden;min-height:0;margin:0;padding-top:16px;border-top:1px solid var(--line);list-style:none;display:flex;flex-wrap:wrap;gap:9px 18px;opacity:0;transition:opacity .3s var(--ease)}
+.offer.on .offer-incl{opacity:1;transition:opacity .4s var(--ease) .1s}
 .offer-incl li{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink)}
 .offer-incl svg{width:16px;height:16px;stroke:var(--gold-ink);fill:none;stroke-width:2;flex-shrink:0}
 .offers-media{position:relative;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);min-height:460px}
@@ -412,27 +434,36 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .offers-media .otag{position:absolute;left:22px;top:22px;z-index:2;background:rgba(58,12,22,.82);backdrop-filter:blur(4px);color:#fff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:9px 16px;border-radius:40px;font-weight:600}
 @media(max-width:860px){.offers-grid{grid-template-columns:1fr;gap:28px}.offers-media{min-height:300px;order:-1}}
 
-/* ============================ MENU / DINING (light) ============================ */
-.dining{background:var(--ivory)}
-.dining .lead{color:var(--muted)}
+/* ============================ MENU / DINING (dark wine moment) ============================ */
+.dining{background:linear-gradient(165deg,var(--burgundy-3),var(--burgundy-deep))}
+.dining .eyebrow{color:var(--gold-pale)}
+.dining .eyebrow::before,.dining .eyebrow.center::after{filter:var(--orn-champ)}
+.dining .h2{color:#fff}
+.dining .kicker-line{filter:var(--orn-champ)}
+.dining .lead{color:rgba(255,255,255,.82)}
 .dining-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(34px,5vw,68px);margin-top:54px;align-items:center}
 .dining-tabs{display:grid;gap:12px}
-.dtab{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 26px;cursor:pointer;transition:.35s var(--ease);box-shadow:var(--shadow-sm)}
-.dtab.on,.dtab:hover{background:linear-gradient(135deg,var(--burgundy),var(--burgundy-3));border-color:transparent}
-.dtab .di{width:44px;height:44px;border-radius:12px;background:rgba(139,14,35,.08);display:flex;align-items:center;justify-content:center}
-.dtab.on .di{background:rgba(255,255,255,.16)}
-.dtab .di svg{width:22px;height:22px;stroke:var(--burgundy);fill:none;stroke-width:1.6}
+.dtab{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:22px 26px;cursor:pointer;transition:.4s var(--ease)}
+/* gradient lives on a pseudo-element so its OPACITY can transition smoothly (background-image itself can't animate) */
+.dtab::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--burgundy),var(--burgundy-3));opacity:0;transition:opacity .45s var(--ease);z-index:0}
+.dtab>*{position:relative;z-index:1}
+.dtab:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+.dtab.on{border-color:var(--gold)}
+.dtab.on::before{opacity:1}
+.dtab .di{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:background .4s var(--ease)}
+.dtab.on .di{background:rgba(255,255,255,.18)}
+.dtab .di svg{width:22px;height:22px;stroke:var(--gold-2);fill:none;stroke-width:1.6;transition:stroke .4s var(--ease)}
 .dtab.on .di svg{stroke:#fff}
-.dtab h3{font-size:1.35rem;margin:0}
-.dtab p{margin:3px 0 0;font-size:13px;color:var(--muted)}
+.dtab h3{font-size:1.35rem;margin:0;color:#fff}
+.dtab p{margin:3px 0 0;font-size:13px;color:rgba(255,255,255,.7);transition:color .4s var(--ease)}
 .dtab.on h3{color:#fff}
-.dtab.on p{color:rgba(255,255,255,.85)}
-.dtab .chev{color:var(--gold-ink);font-size:18px;transition:.3s}
+.dtab.on p{color:rgba(255,255,255,.9)}
+.dtab .chev{color:var(--gold-2);font-size:18px;transition:.3s}
 .dtab.on .chev{transform:translateX(4px);color:#fff}
 .dining-media{position:relative;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);min-height:440px}
 .dining-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .7s var(--ease)}
 .dining-media img.on{opacity:1}
-.dining-media .cap{position:absolute;left:24px;bottom:22px;z-index:2;background:rgba(58,12,22,.78);backdrop-filter:blur(4px);padding:12px 20px;border-radius:40px;font-size:13px;letter-spacing:.05em}
+.dining-media .cap{position:absolute;left:24px;bottom:22px;z-index:2;background:rgba(58,12,22,.78);backdrop-filter:blur(4px);padding:12px 20px;border-radius:40px;font-size:13px;letter-spacing:.05em;color:#fff}
 @media(max-width:860px){.dining-grid{grid-template-columns:1fr;gap:30px}.dining-media{min-height:300px;order:-1}}
 
 /* ============================ ACCOMMODATION (room cards) ============================ */
@@ -579,8 +610,8 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .foot-cta h2{color:#fff;font-size:clamp(2rem,4.6vw,3.4rem);margin:18px 0 16px;line-height:1.06}
 .foot-cta p{color:rgba(255,249,240,.82);margin:0 auto 32px;max-width:520px}
 .foot-cta .orn-corner{position:absolute;width:135px;opacity:.5;pointer-events:none;z-index:0}
-.foot-cta .orn-corner.tl{top:22px;left:22px}
-.foot-cta .orn-corner.br{bottom:22px;right:22px;transform:rotate(180deg)}
+.foot-cta .orn-corner.tl{top:22px;left:22px;transform:scaleX(-1)}
+.foot-cta .orn-corner.br{bottom:22px;right:22px;transform:scaleY(-1)}
 .gold-band{height:5px;background:linear-gradient(90deg,var(--gold),var(--gold-2),var(--gold-pale),var(--gold))}
 @media(max-width:680px){.foot-cta .orn-corner{width:82px;opacity:.35}}
 .foot-main{padding:clamp(56px,7vw,90px) 0 0}
@@ -734,42 +765,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   <div class="scroll-hint"><span class="mouse"></span>Scroll</div>
 </section>
 
-<!-- ============================ INQUIRY QUICK BAR ============================ -->
-<div class="wrap">
-  <form class="quickbar reveal" id="quickbar" aria-label="Wedding availability">
-    <div class="quickbar-card">
-      <div class="qb-field">
-        <label for="qb-date">Wedding Date</label>
-        <input type="date" id="qb-date" name="date" />
-      </div>
-      <div class="qb-field">
-        <label for="qb-guests">Guests</label>
-        <select id="qb-guests" name="guests">
-          <option>Up to 30 — intimate</option>
-          <option selected>30 – 80 guests</option>
-          <option>80 – 120 guests</option>
-          <option>120+ guests</option>
-        </select>
-      </div>
-      <div class="qb-field">
-        <label for="qb-type">Ceremony</label>
-        <select id="qb-type" name="ceremony">
-          <option>Wedding Island</option>
-          <option>Lakeside &amp; Terrace</option>
-          <option>Civil ceremony</option>
-          <option>Free / symbolic</option>
-          <option>Indoor hall</option>
-        </select>
-      </div>
-      <div class="qb-field">
-        <label for="qb-name">Your Name</label>
-        <input type="text" id="qb-name" name="name" placeholder="Jane &amp; John" />
-      </div>
-      <div class="qb-btn"><button type="submit" class="btn btn-burgundy">Check Availability <span class="ar" aria-hidden="true">→</span></button></div>
-    </div>
-  </form>
-</div>
-
 <!-- ============================ INTRO / ABOUT ============================ -->
 <section class="intro section" id="about">
   <div class="wrap">
@@ -799,12 +794,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       </div>
     </div>
     <div class="stats reveal">
-      <!-- PLACEHOLDER FIGURES: confirm exact guest capacity ("120+") and number of event spaces ("4")
-           with Hotel Darstein before publishing; keep the quickbar/form guest brackets in sync. -->
-      <div class="stat"><b data-count="1">1</b><span>Wedding island on the lake</span></div>
-      <div class="stat"><b data-count="120" data-suffix="+">120+</b><span>Guests, intimate to grand</span></div>
-      <div class="stat"><b data-count="4">4</b><span>Flexible event spaces</span></div>
-      <div class="stat"><b>Any</b><span>Season — indoor &amp; out, rain-safe</span></div>
+      <!-- NOTE: "2–120+" guest range still needs the exact maximum confirmed by Hotel Darstein
+           (keep the contact-form guest brackets in sync). Replace "Stay" with a real room/suite
+           count when available, or lead with a trust figure (years hosting weddings / weddings
+           celebrated / guest rating) for an even stronger row once the hotel confirms one. -->
+      <div class="stat"><b>5-in-1</b><span>Ceremony, dinner, party &amp; stay in one place</span></div>
+      <div class="stat"><b>2–120+</b><span>Guests, from intimate to grand</span></div>
+      <div class="stat"><b>Stay</b><span>Rooms &amp; suites on-site, by the water</span></div>
+      <div class="stat"><b data-count="365">365</b><span>Days a year — every season, rain-safe</span></div>
     </div>
   </div>
 </section>
@@ -891,6 +888,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <button type="button" class="gal-item tall reveal" data-d="2"><img loading="lazy" src="../hotel-darstein-placeholder-images/04-emotional-gallery/Sophisticated_wedding_party_night_with_202606230903.jpeg" alt="Sophisticated wedding party at night"><span class="plus" aria-hidden="true">+</span></button>
       <button type="button" class="gal-item reveal"><img loading="lazy" src="../hotel-darstein-placeholder-images/04-emotional-gallery/Sparkling-wine_reception_by_a_lake%2C_202606230901.jpeg" alt="Sparkling wine reception by the lake"><span class="plus" aria-hidden="true">+</span></button>
       <button type="button" class="gal-item reveal" data-d="1"><img loading="lazy" src="../hotel-darstein-placeholder-images/04-emotional-gallery/Elegant_wedding_cake_on_a_202606230902.jpeg" alt="Elegant wedding cake"><span class="plus" aria-hidden="true">+</span></button>
+      <button type="button" class="gal-item reveal" data-d="2"><img loading="lazy" src="../hotel-darstein-placeholder-images/04-emotional-gallery/romantic-wedding-sunset-a-couple-s-embrace-2026-01-07-00-33-36-utc.jpg" alt="Romantic wedding couple embracing at sunset by the lake"><span class="plus" aria-hidden="true">+</span></button>
     </div>
   </div>
 </section>
@@ -904,46 +902,28 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="kicker-line"></div>
       <p class="lead">Picture the whole day flowing in one place — no transfers, no rush, just one beautiful location from morning to the next breakfast.</p>
     </div>
-    <div class="timeline">
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Bride_getting_ready_in_an_202606230907.jpeg" alt="Bride getting ready in an elegant hotel room"></div>
-        <div class="tl-mid"><span class="tl-dot">1</span></div>
-        <div class="tl-text"><span class="time">Morning</span><h3>Arrival &amp; preparation</h3><p>Arrive in calm — soft morning light, your suite by the water, and time to get ready.</p></div>
+    <div class="timeline" id="timeline">
+      <div class="tl-stage">
+        <img class="on" loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Bride_getting_ready_in_an_202606230907.jpeg" alt="Bride getting ready in an elegant hotel room">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Outdoor_wedding_ceremony_by_a_202606230907.jpeg" alt="Outdoor wedding ceremony by the lake">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Wedding_guests_enjoying_sparkling-wine_reception_202606230907.jpeg" alt="Guests enjoying a sparkling-wine reception">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Bride_and_groom_taking_romantic_202606230907.jpeg" alt="Bride and groom taking romantic portraits by the lake">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Elegant_wedding_dinner_in_a_202606230907.jpeg" alt="Elegant candlelit wedding dinner">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Evening_wedding_party_in_hotel_202606230907.jpeg" alt="Evening wedding party with guests dancing">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/12-guest-accommodation/Romantic_bridal_suite_in_a_202606231032.jpeg" alt="Romantic bridal suite for the overnight stay by the lake">
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Relaxed_hotel_breakfast_after_a_202606230907.jpeg" alt="Relaxed hotel breakfast the morning after the wedding">
+        <div class="tl-cap"><span class="now">Now</span><b id="tlNum">1 / 8</b><span class="ct" id="tlTime">Morning</span></div>
+        <div class="tl-pbar"><i id="tlBar"></i></div>
       </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Outdoor_wedding_ceremony_by_a_202606230907.jpeg" alt="Outdoor wedding ceremony by the lake"></div>
-        <div class="tl-mid"><span class="tl-dot">2</span></div>
-        <div class="tl-text"><span class="time">Midday</span><h3>Ceremony on the water</h3><p>Exchange your vows on the wedding island or lakeside, surrounded by those you love.</p></div>
-      </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Wedding_guests_enjoying_sparkling-wine_reception_202606230907.jpeg" alt="Guests enjoying a sparkling-wine reception"></div>
-        <div class="tl-mid"><span class="tl-dot">3</span></div>
-        <div class="tl-text"><span class="time">Afternoon</span><h3>Sparkling reception</h3><p>Toast on the terrace as guests mingle with the lake glowing behind them.</p></div>
-      </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Bride_and_groom_taking_romantic_202606230907.jpeg" alt="Bride and groom taking romantic portraits by the lake"></div>
-        <div class="tl-mid"><span class="tl-dot">4</span></div>
-        <div class="tl-text"><span class="time">Golden hour</span><h3>Portraits by the lake</h3><p>Slip away for a few minutes — the water and golden light do the rest.</p></div>
-      </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Elegant_wedding_dinner_in_a_202606230907.jpeg" alt="Elegant candlelit wedding dinner"></div>
-        <div class="tl-mid"><span class="tl-dot">5</span></div>
-        <div class="tl-text"><span class="time">Evening</span><h3>Dinner &amp; speeches</h3><p>Seasonal menus or generous buffets served in an elegant, candlelit event room.</p></div>
-      </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Evening_wedding_party_in_hotel_202606230907.jpeg" alt="Evening wedding party with guests dancing"></div>
-        <div class="tl-mid"><span class="tl-dot">6</span></div>
-        <div class="tl-text"><span class="time">Night</span><h3>Dance the night away</h3><p>Celebrate late in our party area — then your bed is just a few steps away.</p></div>
-      </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/12-guest-accommodation/Romantic_bridal_suite_in_a_202606231032.jpeg" alt="Romantic bridal suite for the overnight stay by the lake"></div>
-        <div class="tl-mid"><span class="tl-dot">7</span></div>
-        <div class="tl-text"><span class="time">Overnight</span><h3>Stay the night</h3><p>No taxis home — you and your guests simply walk to comfortable rooms by the lake.</p></div>
-      </div>
-      <div class="tl-row reveal">
-        <div class="tl-media"><img loading="lazy" src="../hotel-darstein-placeholder-images/06-wedding-journey/Relaxed_hotel_breakfast_after_a_202606230907.jpeg" alt="Relaxed hotel breakfast the morning after the wedding"></div>
-        <div class="tl-mid"><span class="tl-dot">8</span></div>
-        <div class="tl-text"><span class="time">Next morning</span><h3>Breakfast together</h3><p>Reunite with your guests over a relaxed breakfast and relive every moment.</p></div>
+      <div class="tl-steps" id="tlSteps">
+        <div class="tl-step active on"><span class="tl-dot" aria-hidden="true"></span><span class="time">Morning</span><h3>Arrival &amp; preparation</h3><p>Arrive in calm — soft morning light, your suite by the water, and time to get ready.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Midday</span><h3>Ceremony on the water</h3><p>Exchange your vows on the wedding island or lakeside, surrounded by those you love.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Afternoon</span><h3>Sparkling reception</h3><p>Toast on the terrace as guests mingle with the lake glowing behind them.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Golden hour</span><h3>Portraits by the lake</h3><p>Slip away for a few minutes — the water and golden light do the rest.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Evening</span><h3>Dinner &amp; speeches</h3><p>Seasonal menus or generous buffets served in an elegant, candlelit event room.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Night</span><h3>Dance the night away</h3><p>Celebrate late in our party area — then your bed is just a few steps away.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Overnight</span><h3>Stay the night</h3><p>No taxis home — you and your guests simply walk to comfortable rooms by the lake.</p></div>
+        <div class="tl-step"><span class="tl-dot" aria-hidden="true"></span><span class="time">Next morning</span><h3>Breakfast together</h3><p>Reunite with your guests over a relaxed breakfast and relive every moment.</p></div>
       </div>
     </div>
   </div>
@@ -958,11 +938,27 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="kicker-line"></div>
       <p class="lead">Civil, church, free or symbolic — by the water or under cover. Choose the ceremony that feels like you.</p>
     </div>
-    <div class="cer-grid">
-      <div class="cer-card reveal"><img loading="lazy" src="../hotel-darstein-placeholder-images/07-ceremony-options/Civil_wedding_ceremony_outdoors_at_202606230926.jpeg" alt="Civil wedding ceremony outdoors"><div class="cer-body"><span class="num">01</span><h3>Civil ceremony</h3><p>An official outdoor ceremony in an elegant lakeside setting with seated guests.</p></div></div>
-      <div class="cer-card reveal" data-d="1"><img loading="lazy" src="../hotel-darstein-placeholder-images/07-ceremony-options/Free_wedding_ceremony_by_calm_202606230939.jpeg" alt="Free wedding ceremony by the calm lake"><div class="cer-body"><span class="num">02</span><h3>Free ceremony</h3><p>A personal, freely-spoken ceremony by the calm water with a floral arch.</p></div></div>
-      <div class="cer-card reveal" data-d="2"><img loading="lazy" src="../hotel-darstein-placeholder-images/07-ceremony-options/Symbolic_wedding_ceremony_setup_with_202606230943.jpeg" alt="Symbolic wedding ceremony setup with floral arch"><div class="cer-body"><span class="num">03</span><h3>Symbolic &amp; island</h3><p>A symbolic ceremony on the wedding island, framed by water and greenery.</p></div></div>
-      <div class="cer-card reveal" data-d="3"><img loading="lazy" src="../hotel-darstein-placeholder-images/07-ceremony-options/Elegant_bride_and_groom_after_202606230940.jpeg" alt="Elegant bride and groom after a church wedding"><div class="cer-body"><span class="num">04</span><h3>Church &amp; classic</h3><p>Marry in a nearby church, then arrive for reception and celebration by the lake.</p></div></div>
+    <div class="cer-accordion reveal" id="cerAccordion">
+      <div class="cer-panel is-open" tabindex="0" style="--cer-img:url('../hotel-darstein-placeholder-images/07-ceremony-options/Civil_wedding_ceremony_outdoors_at_202606230926.jpeg')">
+        <span class="cer-num">01</span>
+        <span class="cer-spine">Civil ceremony</span>
+        <div class="cer-reveal"><h3>Civil ceremony</h3><p>An official outdoor ceremony in an elegant lakeside setting with seated guests.</p></div>
+      </div>
+      <div class="cer-panel" tabindex="0" style="--cer-img:url('../hotel-darstein-placeholder-images/07-ceremony-options/Free_wedding_ceremony_by_calm_202606230939.jpeg')">
+        <span class="cer-num">02</span>
+        <span class="cer-spine">Free ceremony</span>
+        <div class="cer-reveal"><h3>Free ceremony</h3><p>A personal, freely-spoken ceremony by the calm water with a floral arch.</p></div>
+      </div>
+      <div class="cer-panel" tabindex="0" style="--cer-img:url('../hotel-darstein-placeholder-images/07-ceremony-options/Symbolic_wedding_ceremony_setup_with_202606230943.jpeg')">
+        <span class="cer-num">03</span>
+        <span class="cer-spine">Symbolic &amp; island</span>
+        <div class="cer-reveal"><h3>Symbolic &amp; island</h3><p>A symbolic ceremony on the wedding island, framed by water and greenery.</p></div>
+      </div>
+      <div class="cer-panel" tabindex="0" style="--cer-img:url('../hotel-darstein-placeholder-images/07-ceremony-options/Elegant_bride_and_groom_after_202606230940.jpeg')">
+        <span class="cer-num">04</span>
+        <span class="cer-spine">Church &amp; classic</span>
+        <div class="cer-reveal"><h3>Church &amp; classic</h3><p>Marry in a nearby church, then arrive for reception and celebration by the lake.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1058,34 +1054,34 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
           <span class="onum">01</span>
           <span><h3>Intimate Wedding</h3><span class="o-sub">For close family &amp; friends, up to ~30 guests</span></span>
           <span class="o-price"><b>On request</b><small>tailored offer</small></span>
-          <ul class="offer-incl">
+          <div class="offer-more"><ul class="offer-incl">
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Wedding-island ceremony</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Lakeside aperitif</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> 3-course dinner</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Bridal-suite night</li>
-          </ul>
+          </ul></div>
         </button>
         <button type="button" class="offer" data-oimg="oimg-2" data-name="Classic Wedding Day" aria-pressed="false">
           <span class="onum">02</span>
           <span><h3>Classic Wedding Day</h3><span class="o-sub">The full lakeside wedding, ~30–80 guests</span></span>
           <span class="o-price"><b>On request</b><small>tailored offer</small></span>
-          <ul class="offer-incl">
+          <div class="offer-more"><ul class="offer-incl">
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Ceremony &amp; terrace reception</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Menu or festive buffet</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Beverage package</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Décor &amp; planning support</li>
-          </ul>
+          </ul></div>
         </button>
         <button type="button" class="offer" data-oimg="oimg-3" data-name="Complete Wedding Weekend" aria-pressed="false">
           <span class="onum">03</span>
           <span><h3>Complete Wedding Weekend</h3><span class="o-sub">A grand celebration, 80–120+ guests</span></span>
           <span class="o-price"><b>On request</b><small>tailored offer</small></span>
-          <ul class="offer-incl">
+          <div class="offer-more"><ul class="offer-incl">
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Full-day island wedding</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Reception, dinner &amp; party</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Catering, drinks &amp; cake</li>
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Room block &amp; breakfast</li>
-          </ul>
+          </ul></div>
         </button>
         <a href="#contact" class="btn btn-outline" style="margin-top:8px">Request Individual Offer <span class="ar" aria-hidden="true">→</span></a>
       </div>
@@ -1322,13 +1318,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <div class="svc reveal"><img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Family_celebration_in_hotel_room_202606231513%20%281%29.jpeg" alt="Family celebration in a hotel event room"><div class="svc-body"><h3>Private celebrations</h3><p>Birthdays, anniversaries, baptisms &amp; family festivities.</p><a href="#contact">Enquire <span class="ar" aria-hidden="true">→</span></a></div></div>
       <div class="svc reveal" data-d="1"><img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Restaurant_terrace_dinner_setting_202606231509%20%281%29.jpeg" alt="Restaurant terrace dinner setting by the lake"><div class="svc-body"><h3>Restaurant &amp; terrace</h3><p>Restaurant-quality dining for your wedding and your guests — with a view over the water.</p><a href="#contact">View dining <span class="ar" aria-hidden="true">→</span></a></div></div>
       <div class="svc reveal" data-d="2">
-        <div class="ph"><span>Conference &amp; seminar room</span></div>
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Hotel_conference_room_presentati%E2%80%A6_202606231517%20%281%29.jpeg" alt="Modern hotel conference and seminar room">
         <div class="svc-body"><h3>Conferences &amp; seminars</h3><p>Modern meeting spaces, technology &amp; conference catering.</p><a href="#contact">Plan a meeting <span class="ar" aria-hidden="true">→</span></a></div>
       </div>
-      <div class="svc reveal"><img loading="lazy" src="../hotel-darstein-placeholder-images/04-emotional-gallery/Sophisticated_wedding_party_night_with_202606230903.jpeg" alt="Club and party area at night"><div class="svc-body"><h3>Club &amp; party area</h3><p>After-parties, company parties and dancing into the night.</p><a href="#contact">Celebrate <span class="ar" aria-hidden="true">→</span></a></div></div>
+      <div class="svc reveal"><img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Sophisticated_club_party_area_with_202606231522%20%281%29.jpeg" alt="Club and party area at night"><div class="svc-body"><h3>Club &amp; party area</h3><p>After-parties, company parties and dancing into the night.</p><a href="#contact">Celebrate <span class="ar" aria-hidden="true">→</span></a></div></div>
       <div class="svc reveal" data-d="1"><img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Elegant_boutique_hotel_room%2C_warm_202606231505.jpeg" alt="Elegant boutique hotel room"><div class="svc-body"><h3>Hotel stay &amp; leisure</h3><p>Romantic lakeside escapes, breakfast &amp; nature on the doorstep.</p><a href="#contact">Stay with us <span class="ar" aria-hidden="true">→</span></a></div></div>
       <div class="svc reveal" data-d="2">
-        <div class="ph"><span>Gift voucher</span></div>
+        <img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Hotel_gift_voucher_concept_with_202606231527.jpeg" alt="Elegant hotel gift voucher concept">
         <div class="svc-body"><h3>Gift vouchers</h3><p>Give a stay, a dinner or a celebration by the lake.</p><a href="#contact">Buy a voucher <span class="ar" aria-hidden="true">→</span></a></div>
       </div>
     </div>
@@ -1502,6 +1498,15 @@ const cio=new IntersectionObserver((entries)=>{
 },{threshold:.6});
 counters.forEach(c=>cio.observe(c));
 
+/* ---------- ceremony accordion (hover / focus / tap to expand) ---------- */
+const cerPanels=[...document.querySelectorAll('.cer-panel')];
+const openCer=p=>cerPanels.forEach(x=>x.classList.toggle('is-open',x===p));
+cerPanels.forEach(p=>{
+  p.addEventListener('mouseenter',()=>openCer(p));
+  p.addEventListener('focus',()=>openCer(p));
+  p.addEventListener('click',()=>openCer(p));
+});
+
 /* ---------- dining tabs ---------- */
 document.querySelectorAll('.dtab').forEach(tab=>{
   tab.addEventListener('click',()=>{
@@ -1511,6 +1516,30 @@ document.querySelectorAll('.dtab').forEach(tab=>{
     document.getElementById(tab.dataset.img).classList.add('on');
   });
 });
+
+/* ---------- wedding-day timeline: sticky photo + progress rail synced to scroll ---------- */
+(function(){
+  const steps=[...document.querySelectorAll('#tlSteps .tl-step')];
+  if(!steps.length)return;
+  const stage=document.querySelector('.tl-stage');
+  const imgs=[...stage.querySelectorAll('img')];
+  const stepsEl=document.getElementById('tlSteps');
+  const num=document.getElementById('tlNum'),tlabel=document.getElementById('tlTime'),bar=document.getElementById('tlBar');
+  const times=steps.map(s=>s.querySelector('.time').textContent);
+  const setActive=(i)=>{
+    imgs.forEach((im,k)=>im.classList.toggle('on',k===i));
+    steps.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.toggle('on',k<=i);});
+    if(num)num.textContent=(i+1)+' / '+steps.length;
+    if(tlabel)tlabel.textContent=times[i];
+    if(bar)bar.style.width=((i+1)/steps.length*100)+'%';
+    const sr=stepsEl.getBoundingClientRect(),dr=steps[i].querySelector('.tl-dot').getBoundingClientRect();
+    stepsEl.style.setProperty('--fill',Math.max(0,(dr.top+dr.height/2)-sr.top)+'px');
+  };
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting)setActive(+e.target.dataset.i);}),{rootMargin:'-46% 0px -46% 0px',threshold:0});
+  steps.forEach((s,i)=>{s.dataset.i=i;io.observe(s);});
+  let rid;window.addEventListener('resize',()=>{cancelAnimationFrame(rid);rid=requestAnimationFrame(()=>{const a=steps.findIndex(s=>s.classList.contains('active'));setActive(a<0?0:a);});});
+  setActive(0);
+})();
 
 /* ---------- offers / packages selector ---------- */
 const offerTag=document.getElementById('offerTag');
@@ -1544,18 +1573,6 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='Tab'){const f=[...lb.querySelectorAll('button')];const first=f[0],last=f[f.length-1];
     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
-});
-
-/* ---------- quick bar -> form prefill + scroll ---------- */
-document.getElementById('quickbar').addEventListener('submit',e=>{
-  e.preventDefault();
-  const d=document.getElementById('qb-date').value;
-  const n=document.getElementById('qb-name').value;
-  if(d)document.getElementById('f-date').value=d;
-  if(n)document.getElementById('f-name').value=n;
-  document.getElementById('f-guests').selectedIndex=document.getElementById('qb-guests').selectedIndex;
-  document.getElementById('f-ceremony').selectedIndex=document.getElementById('qb-type').selectedIndex;
-  document.getElementById('contact').scrollIntoView({behavior:REDUCED?'auto':'smooth'});
 });
 
 /* ---------- click-to-load map (privacy/GDPR-friendly; avoids loading Google until consent) ---------- */
