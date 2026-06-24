@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-megastyle="1">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -157,17 +157,19 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
 .brand img{height:46px;width:auto;transition:.4s}
 .menu{display:flex;gap:30px;align-items:center;margin-left:auto;margin-right:8px}
-.menu a{
+/* top-level nav links + the Events mega trigger (child combinator keeps these
+   rules from leaking into the mega panel's own anchors, which live inside .menu) */
+.menu>a,.menu .mega-trigger{
   font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
   position:relative;padding:6px 0;transition:.3s;
 }
-.header:not(.solid) .menu a,.header:not(.solid) .nav-tools .phone{color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.header:not(.solid) .menu>a,.header:not(.solid) .menu .mega-trigger,.header:not(.solid) .nav-tools .phone{color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.35)}
 .header:not(.solid) .brand img{filter:brightness(0) invert(1) drop-shadow(0 1px 6px rgba(0,0,0,.4))}
-.menu a::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;background:var(--gold);transition:width .35s var(--ease)}
-.menu a:hover{color:var(--gold-ink)}
-.menu a:hover::after{width:100%}
-.menu a.nav-hl{color:var(--burgundy);font-weight:600}
-.menu a.nav-hl::after{width:100%;background:var(--champagne)}
+.menu>a::after,.menu .mega-trigger::after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:1.5px;background:var(--gold);transition:width .35s var(--ease)}
+.menu>a:hover,.menu .mega-trigger:hover{color:var(--gold-ink)}
+.menu>a:hover::after,.menu .mega-trigger:hover::after{width:100%}
+.menu>a.nav-hl{color:var(--burgundy);font-weight:600}
+.menu>a.nav-hl::after{width:100%;background:var(--champagne)}
 .nav-tools{display:flex;align-items:center;gap:18px}
 .nav-tools .phone{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;letter-spacing:.03em}
 .nav-tools .phone svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.7}
@@ -191,6 +193,125 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .drawer-panel .btn{margin-top:22px;justify-content:center}
 .drawer-foot{margin-top:auto;font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.8;padding-top:24px}
 .drawer-foot a{font-family:var(--sans);font-size:12.5px;border:0;padding:0;display:inline}
+/* drawer: collapsible "Events" group (native <details>, no JS needed) */
+.drawer-acc{border-bottom:1px solid rgba(255,255,255,.1)}
+.drawer-acc summary{font-family:var(--serif);font-size:1.5rem;color:#fff;padding:11px 0;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between}
+.drawer-acc summary::-webkit-details-marker{display:none}
+.drawer-acc summary::after{content:"+";font-family:var(--sans);font-size:1.5rem;color:var(--gold-2);transition:transform .3s var(--ease)}
+.drawer-acc[open] summary::after{transform:rotate(45deg)}
+.drawer-acc summary:hover{color:var(--gold-2)}
+.drawer-sub{display:grid;padding:2px 0 12px}
+.drawer-panel .drawer-sub a{font-family:var(--sans);font-size:1rem;color:rgba(255,255,255,.78);padding:9px 0 9px 18px;border-bottom:0}
+.drawer-panel .drawer-sub a:hover{color:var(--gold-2)}
+
+/* ============================ EVENTS MEGA MENU (3 preview styles) ============================ */
+/* The Events nav item owns a drop-panel. Three full layouts live in the DOM; only the
+   one matching <html data-megastyle="N"> is shown, toggled by the temporary switcher. */
+.has-mega{position:static;display:flex;align-items:center}
+.mega-caret{font-size:9px;line-height:1;margin-top:1px;opacity:.85;transition:transform .35s var(--ease)}
+.has-mega.open .mega-caret{transform:rotate(180deg)}
+.has-mega.open>.mega-trigger{color:var(--gold-ink)}
+.has-mega.open>.mega-trigger::after{width:100%}
+.header:not(.solid) .has-mega.open>.mega-trigger{color:var(--gold-2)}
+
+/* shared shell — anchored to the sticky header, centred to the viewport */
+.mega{position:absolute;top:100%;left:50%;z-index:80;width:min(1080px,94vw);
+  transform:translateX(-50%) translateY(16px);opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .4s var(--ease),transform .4s var(--ease),visibility .4s}
+.has-mega.open .mega{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(6px)}
+/* no-JS fallback: pure hover/focus disclosure */
+html:not(.js) .has-mega:hover .mega,html:not(.js) .has-mega:focus-within .mega{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(6px)}
+/* neutralise inherited link styling for the panel's own anchors */
+.mega a{color:inherit;text-transform:none;letter-spacing:normal}
+/* only the chosen variant renders (v2 is a grid, so it gets its own display value) */
+.mega-v{display:none}
+html[data-megastyle="1"] .mega-v1{display:block}
+html[data-megastyle="2"] .mega-v2{display:grid}
+html[data-megastyle="3"] .mega-v3{display:block}
+.mega-eyebrow{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-ink)}
+
+/* ---- Style 1 · Editorial cards (light, photo-led) ---- */
+.mega-v1{background:linear-gradient(180deg,#fff,var(--ivory));border:1px solid rgba(200,164,107,.5);border-radius:var(--r);
+  box-shadow:0 40px 90px -42px rgba(58,12,22,.55);padding:28px 30px 30px;overflow:hidden}
+.mv1-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.mv1-head h3{font-family:var(--serif);font-size:1.7rem;color:var(--ink);margin:5px 0 0}
+.mv1-all{font-size:11.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--burgundy);display:inline-flex;gap:7px;align-items:center;white-space:nowrap}
+.mv1-all:hover{color:var(--gold-ink)}
+.mv1-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.mv1-card{position:relative;border-radius:12px;overflow:hidden;min-height:158px;display:flex;align-items:flex-end;box-shadow:var(--shadow-sm)}
+.mv1-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+/* opacity-animated overlay (gradient backgrounds can't transition; opacity can) — intensifies on hover */
+.mv1-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(58,12,22,.04) 22%,rgba(24,6,11,.97));opacity:.78;transition:opacity .45s var(--ease)}
+.mv1-card:hover img{transform:scale(1.08)}
+.mv1-card:hover::after{opacity:1}
+.mv1-body{position:relative;z-index:2;padding:16px;color:#fff;width:100%}
+.mv1-body h4{font-family:var(--serif);font-size:1.2rem;margin:0 0 2px;color:#fff}
+.mv1-body p{margin:0;font-size:12px;color:rgba(255,255,255,.85);line-height:1.45}
+.mv1-go{position:absolute;top:12px;right:12px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);backdrop-filter:blur(3px);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;opacity:0;transform:scale(.7);transition:.4s var(--ease)}
+.mv1-card:hover .mv1-go{opacity:1;transform:none}
+@media(max-width:1180px){.mv1-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ---- Style 2 · Classic list + feature panel ---- */
+.mega-v2{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:0 40px 90px -42px rgba(58,12,22,.55);
+  grid-template-columns:1.5fr 1fr;overflow:hidden}
+.mv2-list{padding:26px 26px 24px}
+.mv2-head{margin:0 0 16px}
+.mv2-head .mega-title{font-family:var(--serif);font-weight:500;font-size:1.5rem;color:var(--ink);margin-top:5px;display:block;line-height:1.1}
+.mv2-items{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.mv2-item{display:flex;gap:14px;align-items:flex-start;padding:13px 14px;border-radius:12px;transition:background .3s var(--ease)}
+.mv2-item:hover{background:var(--ivory)}
+.mv2-ic{width:42px;height:42px;border-radius:11px;background:rgba(200,164,107,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s var(--ease)}
+.mv2-item:hover .mv2-ic{background:var(--burgundy)}
+.mv2-ic svg{width:20px;height:20px;stroke:var(--gold-ink);fill:none;stroke-width:1.7;transition:stroke .3s var(--ease)}
+.mv2-item:hover .mv2-ic svg{stroke:#fff}
+.mv2-tx h4{font-family:var(--serif);font-size:1.18rem;margin:0 0 1px;color:var(--ink);transition:color .3s var(--ease)}
+.mv2-item:hover .mv2-tx h4{color:var(--burgundy)}
+.mv2-tx p{margin:0;font-size:12px;color:var(--muted);line-height:1.4}
+.mv2-feature{position:relative;overflow:hidden;color:#fff;padding:32px 30px;display:flex;flex-direction:column;justify-content:center;
+  background:linear-gradient(160deg,var(--burgundy-3),var(--burgundy-deep))}
+.mv2-feature::before{content:"";position:absolute;right:18px;bottom:18px;width:140px;height:140px;
+  background:url("../Vintage ornament PNG/New/large_floral_scroll_corner.webp") center/contain no-repeat;filter:var(--orn-champ);opacity:.5;pointer-events:none}
+.mv2-feature>*{position:relative;z-index:1}
+.mv2-feature .mega-eyebrow{color:var(--gold-pale)}
+.mv2-feature h3{font-family:var(--serif);font-weight:500;font-size:1.95rem;color:#fff;margin:10px 0 10px;line-height:1.1}
+.mv2-feature p{font-size:13px;color:rgba(255,255,255,.82);margin:0 0 22px;max-width:280px}
+.mv2-feature .btn{align-self:flex-start}
+@media(max-width:1180px){.mega-v2{grid-template-columns:1fr}.mv2-feature{display:none}}
+
+/* ---- Style 3 · Dark luxe grid ---- */
+.mega-v3{position:relative;background:linear-gradient(165deg,var(--burgundy-3),var(--burgundy-deep));
+  border:1px solid rgba(200,164,107,.35);border-radius:var(--r);box-shadow:0 40px 90px -42px rgba(0,0,0,.7);padding:34px 30px 30px;overflow:hidden}
+.mega-v3::before{content:"";position:absolute;left:50%;top:15px;transform:translateX(-50%);width:230px;height:20px;
+  background:url("../Vintage ornament PNG/New/center_scroll_thin_line_divider.webp") center/contain no-repeat;filter:var(--orn-champ);opacity:.85;pointer-events:none}
+.mv3-head{text-align:center;margin:14px 0 24px}
+.mv3-head .mega-eyebrow{color:var(--gold-2)}
+.mv3-head h3{font-family:var(--serif);font-weight:500;font-size:1.7rem;color:#fff;margin:5px 0 0}
+.mv3-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mv3-item{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);transition:.35s var(--ease)}
+.mv3-item:hover{background:rgba(255,255,255,.09);border-color:var(--gold)}
+.mv3-ic{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .35s var(--ease)}
+.mv3-item:hover .mv3-ic{background:rgba(200,164,107,.22)}
+.mv3-ic svg{width:21px;height:21px;stroke:var(--gold-2);fill:none;stroke-width:1.6}
+.mv3-tx{min-width:0}
+.mv3-tx h4{font-family:var(--serif);font-weight:500;font-size:1.22rem;color:#fff;margin:0 0 2px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mv3-tx h4 .ar{color:var(--gold-2);opacity:0;transform:translateX(-4px);transition:.35s var(--ease)}
+.mv3-item:hover .mv3-tx h4 .ar{opacity:1;transform:none}
+.mv3-tx p{margin:0;font-size:12px;color:rgba(255,255,255,.7);line-height:1.45}
+@media(max-width:1180px){.mv3-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* TEMP · preview switcher for the 3 Events-menu styles — delete this block + #megaSwitch markup + its JS once a style is chosen */
+.megaswitch{position:fixed;left:18px;bottom:18px;z-index:110;display:flex;align-items:center;gap:11px;
+  background:rgba(30,27,24,.93);color:#fff;border:1px dashed rgba(200,164,107,.7);border-radius:50px;
+  padding:9px 12px 9px 17px;backdrop-filter:blur(6px);box-shadow:0 18px 42px -18px rgba(0,0,0,.6)}
+.megaswitch b{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--gold-2);font-weight:600;white-space:nowrap}
+.megaswitch .ms-btns{display:flex;gap:6px}
+.megaswitch button{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:transparent;color:#fff;font-size:13px;font-weight:600;transition:.25s}
+.megaswitch button:hover{border-color:var(--gold-2)}
+.megaswitch button.on{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#3a2a0c;border-color:transparent}
+.megaswitch .ms-x{margin-left:1px;width:auto;height:auto;border:0;border-radius:0;background:none;color:rgba(255,255,255,.5);font-size:17px;line-height:1}
+.megaswitch .ms-x:hover{color:#fff}
+.megaswitch.is-hidden{display:none}
+@media(max-width:1080px){.megaswitch{display:none}}
 
 /* ============================ HERO ============================ */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;margin-top:-126px;padding-top:126px;color:#fff;overflow:hidden}
@@ -267,18 +388,20 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
 .why-card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:38px 32px;transition:.4s var(--ease);position:relative;overflow:hidden;box-shadow:var(--shadow-sm)}
 .why-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--burgundy),var(--burgundy-3));opacity:0;transition:.4s;z-index:0}
-.why-card::after{content:"";position:absolute;right:14px;bottom:14px;width:64px;height:64px;background:url("../Vintage ornament PNG/New/large_floral_scroll_corner.webp") center/contain no-repeat;opacity:.5;filter:var(--orn-champ);pointer-events:none;z-index:0}
-.why-card.feat::after{opacity:.6}
+.why-card::after{content:"";position:absolute;right:12px;bottom:12px;width:92px;height:92px;background:url("../Vintage ornament PNG/New/large_floral_scroll_corner.webp") center/contain no-repeat;opacity:1;filter:var(--orn-champ);pointer-events:none;z-index:0}
+.why-card.feat::after{opacity:1}
 .why-card>*{position:relative;z-index:1}
 /* hover = subtle lift + champagne border (does NOT fill burgundy) so the one featured card stays the anchor */
 .why-card:hover{transform:translateY(-6px);border-color:var(--champagne)}
 /* featured card = permanently burgundy-filled — the single distinct/active card */
 .why-card.feat{transform:translateY(-6px);border-color:transparent}
 .why-card.feat::before{opacity:1}
-.why-ico{width:54px;height:54px;border-radius:14px;background:rgba(139,14,35,.07);display:flex;align-items:center;justify-content:center;margin-bottom:24px;transition:.4s}
+.why-ico{width:62px;height:62px;border-radius:16px;background:rgba(139,14,35,.07);display:flex;align-items:center;justify-content:center;margin-bottom:24px;transition:.4s}
 .why-card.feat .why-ico{background:rgba(255,255,255,.16)}
 .why-ico svg{width:26px;height:26px;stroke:var(--burgundy);fill:none;stroke-width:1.6}
+.why-ico img{width:46px;height:46px;object-fit:contain}
 .why-card.feat .why-ico svg{stroke:#fff}
+.why-card.feat .why-ico img{filter:brightness(0) invert(1)} /* whiten the burgundy line-icon on the dark featured card */
 .why-card h3{font-size:1.55rem;margin-bottom:12px}
 .why-card p{font-size:14.5px;color:var(--muted);margin:0}
 .why-card.feat h3{color:#fff}
@@ -450,10 +573,12 @@ html:not(.js) .cer-panel:hover .cer-reveal{opacity:1;transform:none}
 .dtab:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
 .dtab.on{border-color:var(--gold)}
 .dtab.on::before{opacity:1}
-.dtab .di{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:background .4s var(--ease)}
+.dtab .di{width:52px;height:52px;border-radius:13px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;transition:background .4s var(--ease)}
 .dtab.on .di{background:rgba(255,255,255,.18)}
 .dtab .di svg{width:22px;height:22px;stroke:var(--gold-2);fill:none;stroke-width:1.6;transition:stroke .4s var(--ease)}
+.dtab .di img{width:34px;height:34px;object-fit:contain;filter:var(--orn-champ);transition:filter .4s var(--ease)} /* tint burgundy line-icon to champagne on the dark dining panel */
 .dtab.on .di svg{stroke:#fff}
+.dtab.on .di img{filter:brightness(0) invert(1)}
 .dtab h3{font-size:1.35rem;margin:0;color:#fff}
 .dtab p{margin:3px 0 0;font-size:13px;color:rgba(255,255,255,.7);transition:color .4s var(--ease)}
 .dtab.on h3{color:#fff}
@@ -505,34 +630,59 @@ html:not(.js) .cer-panel:hover .cer-reveal{opacity:1;transform:none}
 .loc-map{margin-top:40px;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);height:380px;border:6px solid #fff;position:relative}
 .loc-map iframe{width:100%;height:100%;border:0;display:block;filter:grayscale(.2)}
 .map-cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px;
-  background:linear-gradient(135deg,var(--burgundy),var(--burgundy-3)),repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 16px,transparent 16px 32px);color:#fff}
+  background:linear-gradient(135deg,rgba(95,7,23,.74),rgba(58,12,22,.82)),url("../hotel-darstein-placeholder-images/26-footer-contact/26-4-map-google.png") center/cover no-repeat;color:#fff}
 .map-cover svg{width:40px;height:40px;stroke:var(--gold-2);fill:none;stroke-width:1.6}
 .map-cover p{margin:0;max-width:420px;line-height:1.6;color:rgba(255,255,255,.92)}
 .map-cover small{font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.04em}
 @media(max-width:860px){.loc-grid{grid-template-columns:1fr;gap:38px}.loc-media{order:-1}.loc-map{height:300px}}
 
-/* ============================ TESTIMONIAL / STORY ============================ */
+/* ============================ TESTIMONIAL / STORY (slow crossfade carousel) ============================ */
+/* --ease-slide: gentle ease-in-out so slides + background glide rather than snap */
 .story{position:relative;color:#fff;overflow:hidden}
 .story-bg{position:absolute;inset:0;z-index:-2}
-.story-bg img{width:100%;height:100%;object-fit:cover}
+/* one background layer per testimonial — they crossfade in sync with the active slide */
+.story-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s cubic-bezier(.65,.02,.35,1)}
+.story-bg img.on{opacity:1}
 .story-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,20,15,.82),rgba(58,12,22,.8))}
 .story .wrap{position:relative}
-.quote-card{max-width:760px;margin:0 auto;text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
-  backdrop-filter:blur(6px);border-radius:22px;padding:clamp(40px,6vw,72px)}
-.quote-orn{width:170px;height:26px;margin:0 auto 16px;background:url("../Vintage ornament PNG/New/center_scroll_thin_line_divider.webp") center/contain no-repeat}
-.quote-card .stars{color:var(--gold-2);letter-spacing:6px;font-size:20px;margin-bottom:24px}
+.story-head{max-width:680px;margin:0 auto 46px;text-align:center}
+.story-head .h2{color:#fff;margin-top:16px}
+.story-head .lead{color:rgba(255,255,255,.82)}
+.quote-slider{max-width:880px;margin:0 auto}
+.quote-view{overflow:hidden;border-radius:22px;outline:none}
+.quote-view:focus-visible{box-shadow:0 0 0 3px var(--gold-2)}
+.quote-track{display:flex;transition:transform 1.3s cubic-bezier(.65,.02,.35,1);will-change:transform}
+.quote-slide{flex:0 0 100%;min-width:0;padding:4px}
+.quote-card{position:relative;overflow:hidden;text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(6px);border-radius:22px;padding:clamp(40px,5.5vw,68px)}
+.quote-card>*{position:relative;z-index:1}
+/* hanging scroll ornament — bottom-right corner only (rotated 180° from its top-left default), champagne-tinted for the dark card */
+.quote-card::after{content:"";position:absolute;right:10px;bottom:10px;width:clamp(66px,15vw,98px);height:clamp(116px,26vw,174px);
+  background:url("../Vintage ornament PNG/New/hanging_scroll_corner_with_tail.webp") center/contain no-repeat;
+  transform:scaleY(-1);filter:var(--orn-champ);opacity:.55;pointer-events:none;z-index:0}
+.quote-card .stars{color:var(--gold-2);letter-spacing:6px;font-size:20px;margin-bottom:22px}
 .quote-card blockquote{font-family:var(--serif);font-size:clamp(1.5rem,3.2vw,2.4rem);line-height:1.35;font-style:italic;margin:0;color:#fff}
-.quote-card .who{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.quote-card .who{margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:3px}
 .quote-card .who b{font-family:var(--sans);font-size:15px;letter-spacing:.04em;font-weight:600;color:var(--gold-pale)}
 .quote-card .who span{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.quote-ctrls{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:34px}
+.quote-arrow{width:48px;height:48px;border-radius:50%;background:transparent;border:1px solid rgba(216,189,138,.55);color:var(--gold-2);display:flex;align-items:center;justify-content:center;transition:.3s var(--ease)}
+.quote-arrow svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.7}
+.quote-arrow:hover{background:var(--gold-2);color:var(--burgundy-3);border-color:var(--gold-2)}
+.quote-arrow:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
+.quote-dots{display:flex;gap:10px}
+.quote-dot{width:9px;height:9px;padding:0;border-radius:50%;border:0;background:rgba(255,255,255,.3);transition:.3s var(--ease)}
+.quote-dot.on{width:30px;border-radius:6px;background:var(--gold-2)}
+.quote-dot:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
 
 /* ============================ QUICK FACTS ============================ */
 .facts{background:var(--ivory)}
 .facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:54px}
 .fact{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;transition:.35s var(--ease)}
 .fact:hover{border-color:var(--gold);transform:translateY(-5px);box-shadow:var(--shadow-sm)}
-.fact .fi{width:48px;height:48px;border-radius:12px;background:rgba(110,18,38,.07);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.fact .fi{width:56px;height:56px;border-radius:13px;background:rgba(110,18,38,.07);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
 .fact .fi svg{width:24px;height:24px;stroke:var(--burgundy);fill:none;stroke-width:1.6}
+.fact .fi img{width:40px;height:40px;object-fit:contain}
 .fact h3{font-size:1.3rem;margin-bottom:6px}
 .fact p{margin:0;font-size:13.5px;color:var(--muted)}
 @media(max-width:880px){.facts-grid{grid-template-columns:1fr 1fr}}
@@ -698,13 +848,71 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         <img src="../logo-hoteldarstein.png" alt="Hotel Darstein" />
       </a>
       <div class="menu">
-        <a href="#weddings" class="nav-hl">Weddings</a>
-        <a href="#offers">Packages</a>
-        <a href="#spaces">Spaces</a>
-        <a href="#dining">Dining</a>
-        <a href="#stay">Rooms</a>
-        <a href="#location">Location</a>
-        <a href="#contact">Contact</a>
+        <a href="#contact">Reservation</a>
+
+        <!-- Events: drop-panel with 3 selectable styles (only the chosen one shows) -->
+        <div class="has-mega">
+          <a href="#more" class="mega-trigger" aria-haspopup="true" aria-expanded="false">Events <span class="mega-caret" aria-hidden="true">&#9662;</span></a>
+          <div class="mega" role="region" aria-label="Events at Hotel Darstein">
+
+            <!-- ===== Style 1 · Editorial cards ===== -->
+            <div class="mega-v mega-v1">
+              <div class="mv1-head">
+                <div>
+                  <span class="mega-eyebrow">Beyond weddings</span>
+                  <h3>A hotel for every occasion</h3>
+                </div>
+                <a href="#more" class="mv1-all">View all events <span aria-hidden="true">&rarr;</span></a>
+              </div>
+              <div class="mv1-grid">
+                <a class="mv1-card" href="#more"><img src="../hotel-darstein-placeholder-images/19-secondary-services/Family_celebration_in_hotel_room_202606231513%20%281%29.jpeg" alt=""><div class="mv1-body"><h4>Private celebrations</h4><p>Birthdays, anniversaries &amp; family festivities.</p></div><span class="mv1-go" aria-hidden="true">&rarr;</span></a>
+                <a class="mv1-card" href="#dining"><img src="../hotel-darstein-placeholder-images/19-secondary-services/Restaurant_terrace_dinner_setting_202606231509%20%281%29.jpeg" alt=""><div class="mv1-body"><h4>Restaurant &amp; terrace</h4><p>Lakeside dining with a view over the water.</p></div><span class="mv1-go" aria-hidden="true">&rarr;</span></a>
+                <a class="mv1-card" href="#more"><img src="../hotel-darstein-placeholder-images/19-secondary-services/Hotel_conference_room_presentati%E2%80%A6_202606231517%20%281%29.jpeg" alt=""><div class="mv1-body"><h4>Conferences &amp; seminars</h4><p>Meeting spaces, technology &amp; catering.</p></div><span class="mv1-go" aria-hidden="true">&rarr;</span></a>
+                <a class="mv1-card" href="#more"><img src="../hotel-darstein-placeholder-images/19-secondary-services/Sophisticated_club_party_area_with_202606231522%20%281%29.jpeg" alt=""><div class="mv1-body"><h4>Club &amp; party area</h4><p>After-parties &amp; dancing into the night.</p></div><span class="mv1-go" aria-hidden="true">&rarr;</span></a>
+                <a class="mv1-card" href="#stay"><img src="../hotel-darstein-placeholder-images/19-secondary-services/Elegant_boutique_hotel_room%2C_warm_202606231505.jpeg" alt=""><div class="mv1-body"><h4>Hotel stay &amp; leisure</h4><p>Romantic lakeside escapes &amp; breakfast.</p></div><span class="mv1-go" aria-hidden="true">&rarr;</span></a>
+                <a class="mv1-card" href="#contact"><img src="../hotel-darstein-placeholder-images/19-secondary-services/Hotel_gift_voucher_concept_with_202606231527.jpeg" alt=""><div class="mv1-body"><h4>Gift vouchers</h4><p>Give a stay, a dinner or a celebration.</p></div><span class="mv1-go" aria-hidden="true">&rarr;</span></a>
+              </div>
+            </div>
+
+            <!-- ===== Style 2 · Classic list + feature ===== -->
+            <div class="mega-v mega-v2">
+              <div class="mv2-list">
+                <div class="mv2-head"><span class="mega-eyebrow">Beyond weddings</span><span class="mega-title">A hotel for every occasion</span></div>
+                <div class="mv2-items">
+                  <a class="mv2-item" href="#more"><span class="mv2-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3M12 8v3M17 8v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/></svg></span><span class="mv2-tx"><h4>Private celebrations</h4><p>Birthdays, anniversaries &amp; family festivities.</p></span></a>
+                  <a class="mv2-item" href="#dining"><span class="mv2-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v5a2 2 0 0 0 4 0V3M8 8v13M16 3c-1.6 1.4-2.3 3.7-2.3 6 0 1.8.9 3 2.3 3v9"/></svg></span><span class="mv2-tx"><h4>Restaurant &amp; terrace</h4><p>Lakeside dining with a view over the water.</p></span></a>
+                  <a class="mv2-item" href="#more"><span class="mv2-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18"/><path d="M4 4v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4"/><path d="m8 21 4-3 4 3"/><path d="M9 11l2-2 2 1 2-3"/></svg></span><span class="mv2-tx"><h4>Conferences &amp; seminars</h4><p>Meeting spaces, technology &amp; catering.</p></span></a>
+                  <a class="mv2-item" href="#more"><span class="mv2-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="mv2-tx"><h4>Club &amp; party area</h4><p>After-parties &amp; dancing into the night.</p></span></a>
+                  <a class="mv2-item" href="#stay"><span class="mv2-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 15h18"/><path d="M7 10V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M12 10V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2"/><path d="M4 18v2M20 18v2"/></svg></span><span class="mv2-tx"><h4>Hotel stay &amp; leisure</h4><p>Romantic lakeside escapes &amp; breakfast.</p></span></a>
+                  <a class="mv2-item" href="#contact"><span class="mv2-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C9.5 3 12 5 12 8"/><path d="M16.5 8a2.5 2.5 0 0 0 0-5C14.5 3 12 5 12 8"/></svg></span><span class="mv2-tx"><h4>Gift vouchers</h4><p>Give a stay, a dinner or a celebration.</p></span></a>
+                </div>
+              </div>
+              <div class="mv2-feature">
+                <span class="mega-eyebrow">Plan your event</span>
+                <h3>Celebrate by the lake</h3>
+                <p>Tell us your occasion and we&rsquo;ll tailor the spaces, menu and overnight stay to match.</p>
+                <a href="#contact" class="btn btn-gold">Enquire now <span class="ar" aria-hidden="true">&rarr;</span></a>
+              </div>
+            </div>
+
+            <!-- ===== Style 3 · Dark luxe grid ===== -->
+            <div class="mega-v mega-v3">
+              <div class="mv3-head"><span class="mega-eyebrow">Beyond weddings</span><h3>A hotel for every occasion</h3></div>
+              <div class="mv3-grid">
+                <a class="mv3-item" href="#more"><span class="mv3-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"/><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"/><path d="M2 21h20"/><path d="M7 8v3M12 8v3M17 8v3"/><path d="M7 4h.01M12 4h.01M17 4h.01"/></svg></span><span class="mv3-tx"><h4>Private celebrations <span class="ar" aria-hidden="true">&rarr;</span></h4><p>Birthdays, anniversaries &amp; family festivities.</p></span></a>
+                <a class="mv3-item" href="#dining"><span class="mv3-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v5a2 2 0 0 0 4 0V3M8 8v13M16 3c-1.6 1.4-2.3 3.7-2.3 6 0 1.8.9 3 2.3 3v9"/></svg></span><span class="mv3-tx"><h4>Restaurant &amp; terrace <span class="ar" aria-hidden="true">&rarr;</span></h4><p>Lakeside dining with a view over the water.</p></span></a>
+                <a class="mv3-item" href="#more"><span class="mv3-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18"/><path d="M4 4v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4"/><path d="m8 21 4-3 4 3"/><path d="M9 11l2-2 2 1 2-3"/></svg></span><span class="mv3-tx"><h4>Conferences &amp; seminars <span class="ar" aria-hidden="true">&rarr;</span></h4><p>Meeting spaces, technology &amp; catering.</p></span></a>
+                <a class="mv3-item" href="#more"><span class="mv3-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="mv3-tx"><h4>Club &amp; party area <span class="ar" aria-hidden="true">&rarr;</span></h4><p>After-parties &amp; dancing into the night.</p></span></a>
+                <a class="mv3-item" href="#stay"><span class="mv3-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6"/><path d="M3 15h18"/><path d="M7 10V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2M12 10V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v2"/><path d="M4 18v2M20 18v2"/></svg></span><span class="mv3-tx"><h4>Hotel stay &amp; leisure <span class="ar" aria-hidden="true">&rarr;</span></h4><p>Romantic lakeside escapes &amp; breakfast.</p></span></a>
+                <a class="mv3-item" href="#contact"><span class="mv3-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C9.5 3 12 5 12 8"/><path d="M16.5 8a2.5 2.5 0 0 0 0-5C14.5 3 12 5 12 8"/></svg></span><span class="mv3-tx"><h4>Gift vouchers <span class="ar" aria-hidden="true">&rarr;</span></h4><p>Give a stay, a dinner or a celebration.</p></span></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact Us</a>
       </div>
       <div class="nav-tools">
         <a href="tel:+4962364440" class="phone">
@@ -723,15 +931,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   <div class="drawer-bg" data-close></div>
   <div class="drawer-panel" id="drawerPanel" role="dialog" aria-modal="true" aria-label="Menu">
     <button class="x" data-close aria-label="Close menu">&times;</button>
-    <a href="#weddings" data-close>Weddings</a>
-    <a href="#journey" data-close>The Wedding Day</a>
-    <a href="#spaces" data-close>Spaces</a>
-    <a href="#dining" data-close>Dining</a>
-    <a href="#stay" data-close>Stay Overnight</a>
-    <a href="#gallery" data-close>Gallery</a>
-    <a href="#location" data-close>Location</a>
-    <a href="#contact" data-close>Contact</a>
-    <a href="#contact" class="btn btn-gold" data-close>Request Wedding Viewing</a>
+    <a href="#contact" data-close>Reservation</a>
+    <details class="drawer-acc">
+      <summary>Events</summary>
+      <div class="drawer-sub">
+        <a href="#more" data-close>Private celebrations</a>
+        <a href="#dining" data-close>Restaurant &amp; terrace</a>
+        <a href="#more" data-close>Conferences &amp; seminars</a>
+        <a href="#more" data-close>Club &amp; party area</a>
+        <a href="#stay" data-close>Hotel stay &amp; leisure</a>
+        <a href="#contact" data-close>Gift vouchers</a>
+      </div>
+    </details>
+    <a href="#about" data-close>About Us</a>
+    <a href="#contact" data-close>Contact Us</a>
+    <a href="#contact" class="btn btn-gold" data-close>Request Viewing</a>
     <div class="drawer-foot">
       Zum Strandhotel 10, 67122 Altrip<br>
       <a href="tel:+4962364440">06236 4440</a> · <a href="mailto:info@hotel-darstein.de">info@hotel-darstein.de</a>
@@ -838,32 +1052,32 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     </div>
     <div class="why-grid">
       <div class="why-card feat reveal">
-        <div class="why-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="why-ico"><img src="../icons/05-wedding-island.png" alt="" loading="lazy"></div>
         <h3>Wedding island</h3>
         <p>Exchange vows on a ceremony island surrounded by calm water — a setting very few venues can offer.</p>
       </div>
       <div class="why-card reveal" data-d="1">
-        <div class="why-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 21h18M5 21V8l7-5 7 5v13M10 21v-6h4v6"/></svg></div>
+        <div class="why-ico"><img src="../icons/06-guest-rooms-hotel-rooms.png" alt="" loading="lazy"></div>
         <h3>Guest rooms</h3>
         <p>Comfortable hotel rooms and suites — some with lake view — so loved ones simply stay the weekend.</p>
       </div>
       <div class="why-card reveal" data-d="2">
-        <div class="why-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11h18M5 11V7a7 7 0 0 1 14 0v4M7 11v8m10-8v8M5 19h14"/></svg></div>
+        <div class="why-ico"><img src="../icons/07-menu-buffet.png" alt="" loading="lazy"></div>
         <h3>Menu &amp; buffet</h3>
         <p>Seasonal regional and international cuisine, menus, buffets and beverage packages — all in-house.</p>
       </div>
       <div class="why-card reveal" data-d="1">
-        <div class="why-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11Z"/><path d="m8 11 2.5 2.5L16 8"/></svg></div>
+        <div class="why-ico"><img src="../icons/08-indoor-outdoor-weather-safe.png" alt="" loading="lazy"></div>
         <h3>Indoor &amp; outdoor</h3>
         <p>Air-conditioned, divisible event rooms mean your celebration is beautiful in any weather.</p>
       </div>
       <div class="why-card reveal" data-d="2">
-        <div class="why-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2v4M5 8l2 2M19 8l-2 2M3 14h3m12 0h3M7 21a5 5 0 0 1 10 0"/><circle cx="12" cy="14" r="3"/></svg></div>
+        <div class="why-ico"><img src="../icons/11-planning-support.png" alt="" loading="lazy"></div>
         <h3>Planning support</h3>
         <p>From menu tasting to décor, cake, DJ and timing — an experienced team keeps everything calm.</p>
       </div>
       <div class="why-card reveal" data-d="3">
-        <div class="why-ico"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8Z"/></svg></div>
+        <div class="why-ico"><img src="../icons/10-lakeside-reception.png" alt="" loading="lazy"></div>
         <h3>Lakeside reception</h3>
         <p>Toast and celebrate on the terrace by the water — then dine and dance just a few steps away.</p>
       </div>
@@ -1107,22 +1321,22 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     <div class="dining-grid">
       <div class="dining-tabs reveal">
         <div class="dtab on" data-img="dimg-1">
-          <span class="di"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 2v9a3 3 0 0 0 6 0V2M10 2v20M17 2c-1.5 1-2 3-2 6s.5 5 2 6v8"/></svg></span>
+          <span class="di"><img src="../icons/01-plated-menus.png" alt="" loading="lazy"></span>
           <div><h3>Plated menus</h3><p>Multi-course seasonal menus, beautifully served.</p></div>
           <span class="chev">→</span>
         </div>
         <div class="dtab" data-img="dimg-2">
-          <span class="di"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11h18M4 11a8 8 0 0 1 16 0M12 3v2M2 15h20l-2 5H4l-2-5Z"/></svg></span>
+          <span class="di"><img src="../icons/02-festive-buffets.png" alt="" loading="lazy"></span>
           <div><h3>Festive buffets</h3><p>Abundant, generous spreads for relaxed celebrations.</p></div>
           <span class="chev">→</span>
         </div>
         <div class="dtab" data-img="dimg-3">
-          <span class="di"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 2h8l-1 7a3 3 0 0 1-6 0L8 2ZM12 12v7M8 22h8"/></svg></span>
+          <span class="di"><img src="../icons/03-wine-drinks.png" alt="" loading="lazy"></span>
           <div><h3>Wine &amp; drinks</h3><p>Regional wines and beverage packages, perfectly paired.</p></div>
           <span class="chev">→</span>
         </div>
         <div class="dtab" data-img="dimg-4">
-          <span class="di"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3c2 3-2 4 0 7M9 21h6M7 11h10l-1 7a3 3 0 0 1-3 2.5h-2A3 3 0 0 1 8 18l-1-7Z"/></svg></span>
+          <span class="di"><img src="../icons/04-cake-desserts.png" alt="" loading="lazy"></span>
           <div><h3>Cake &amp; desserts</h3><p>An elegant cake and sweet table to finish the evening.</p></div>
           <span class="chev">→</span>
         </div>
@@ -1158,7 +1372,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         </div>
       </div>
       <div class="room reveal" data-d="1">
-        <div class="room-img"><span class="pill">Lake View</span><img loading="lazy" src="../hotel-darstein-placeholder-images/12-guest-accommodation/Elegant_hotel_room_prepared_for_202606231031.jpeg" alt="Elegant hotel room with lake view"></div>
+        <div class="room-img"><span class="pill">Lake View</span><img loading="lazy" src="../hotel-darstein-placeholder-images/13-location-blue-adriatic/Hotel_terrace_overlooking_a_lake_202606231205.jpeg" alt="Hotel terrace overlooking the lake"></div>
         <div class="room-body">
           <h3>Lake-View Room</h3>
           <p>Comfortable, friendly non-smoking rooms — some looking straight onto the water.</p>
@@ -1167,7 +1381,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         </div>
       </div>
       <div class="room reveal" data-d="2">
-        <div class="room-img"><span class="pill">For guests</span><img loading="lazy" src="../hotel-darstein-placeholder-images/13-location-blue-adriatic/Hotel_terrace_overlooking_a_lake_202606231205.jpeg" alt="Hotel terrace overlooking the lake for wedding guests"></div>
+        <div class="room-img"><span class="pill">For guests</span><img loading="lazy" src="../hotel-darstein-placeholder-images/12-guest-accommodation/Elegant_hotel_room_prepared_for_202606231031.jpeg" alt="Elegant guest room prepared for hotel guests"></div>
         <div class="room-body">
           <h3>Guest Rooms</h3>
           <p>A block of comfortable rooms so your whole party can stay the weekend together.</p>
@@ -1215,20 +1429,62 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   </div>
 </section>
 
-<!-- ============================ STORY / TESTIMONIAL ============================ -->
-<section class="story section" id="story">
-  <div class="story-bg">
-    <img src="../hotel-darstein-placeholder-images/14-real-wedding-story/Couple_holding_hands_lake_202606231302.jpeg" alt="Real wedding couple holding hands by the lake">
+<!-- ============================ STORY / TESTIMONIAL (slow crossfade carousel) ============================ -->
+<!-- PLACEHOLDER testimonials — replace all three with genuine, consented guest reviews before publishing. -->
+<section class="story section" id="story" aria-roledescription="carousel" aria-label="Guest testimonials">
+  <!-- one background per slide; they crossfade with the active testimonial (see carousel JS) -->
+  <div class="story-bg" aria-hidden="true">
+    <img class="on" src="../hotel-darstein-placeholder-images/01-hero-wedding-location/romantic-wedding-sunset-a-couple-s-embrace-2026-01-07-00-33-36-utc.jpg" alt="">
+    <img src="../hotel-darstein-placeholder-images/04-emotional-gallery/Sophisticated_wedding_party_night_with_202606230903.jpeg" alt="" loading="lazy">
+    <img src="../hotel-darstein-placeholder-images/08-indoor-outdoor-spaces/Outdoor_wedding_terrace_overlooking_a_202606230944.jpeg" alt="" loading="lazy">
   </div>
   <div class="wrap">
-    <div class="quote-card reveal">
-      <div class="quote-orn orn-light"></div>
-      <div class="stars">★★★★★</div>
-      <blockquote>“We married on the island as the sun set over the water — then celebrated, danced and stayed the night without leaving. Our guests still talk about it. Darstein didn’t just host our wedding, they carried it.”</blockquote>
-      <!-- PLACEHOLDER testimonial — replace with a genuine, consented guest review before publishing. -->
-      <div class="who">
-        <b>Lena &amp; Maximilian</b>
-        <span>Illustrative review — replace with a real couple’s words</span>
+    <div class="story-head center reveal">
+      <span class="eyebrow center orn-light">Loved by our couples</span>
+      <h2 class="h2">In their own words</h2>
+      <div class="kicker-line orn-light"></div>
+      <p class="lead">Real weddings on the Blue Adriatic — ceremony, celebration and the morning after, all in one place.</p>
+    </div>
+
+    <div class="quote-slider reveal" data-d="1">
+      <div class="quote-view" aria-live="polite">
+        <div class="quote-track">
+
+          <div class="quote-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">
+            <div class="quote-card">
+              <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <blockquote>“We married on the island as the sun set over the water — then celebrated, danced and stayed the night without leaving. Our guests still talk about it. Darstein didn’t just host our wedding, they carried it.”</blockquote>
+              <div class="who"><b>Lena &amp; Maximilian</b><span>Wedding on the island · June 2025</span></div>
+            </div>
+          </div>
+
+          <div class="quote-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">
+            <div class="quote-card">
+              <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <blockquote>“One place for the ceremony, the dinner, the party and the night after. We never had to move our guests around — everything simply flowed, and we got to be fully present at our own wedding.”</blockquote>
+              <div class="who"><b>Sophie &amp; Jonas</b><span>Lakeside ceremony &amp; reception · 2025</span></div>
+            </div>
+          </div>
+
+          <div class="quote-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">
+            <div class="quote-card">
+              <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+              <blockquote>“The team handled every detail so calmly that we could just enjoy the day. The terrace at golden hour, right on the lake, is something none of our guests will ever forget.”</blockquote>
+              <div class="who"><b>Hannah &amp; David</b><span>Terrace reception · 2024</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="quote-ctrls">
+        <button type="button" class="quote-arrow quote-prev" aria-label="Previous testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="quote-dots" role="tablist" aria-label="Choose testimonial">
+          <button type="button" class="quote-dot on" aria-label="Testimonial 1"></button>
+          <button type="button" class="quote-dot" aria-label="Testimonial 2"></button>
+          <button type="button" class="quote-dot" aria-label="Testimonial 3"></button>
+        </div>
+        <button type="button" class="quote-arrow quote-next" aria-label="Next testimonial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
     </div>
   </div>
@@ -1244,14 +1500,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       <p class="lead">Ceremony, reception, dinner, party, hotel rooms and breakfast — one destination, one team, no compromise.</p>
     </div>
     <div class="facts-grid">
-      <div class="fact reveal"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Wedding island</h3><p>A ceremony location surrounded by the lake — rare and unforgettable.</p></div>
-      <div class="fact reveal" data-d="1"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 21h18M5 21V8l7-5 7 5v13M10 21v-6h4v6"/></svg></div><h3>Hotel rooms</h3><p>Overnight stays for you and your guests, some with lake view.</p></div>
-      <div class="fact reveal" data-d="2"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11h18M5 11V7a7 7 0 0 1 14 0v4M7 11v8m10-8v8"/></svg></div><h3>In-house catering</h3><p>Restaurant kitchen, menus, buffets and beverage packages.</p></div>
-      <div class="fact reveal" data-d="3"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 21s-8-4.5-8-11a8 8 0 0 1 16 0c0 6.5-8 11-8 11Z"/><path d="m8 11 2.5 2.5L16 8"/></svg></div><h3>Weather-safe</h3><p>Indoor &amp; outdoor spaces with a beautiful plan B, always.</p></div>
-      <div class="fact reveal"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87"/></svg></div><h3>Planning support</h3><p>An experienced team guiding every step, calmly.</p></div>
-      <div class="fact reveal" data-d="1"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 13l2-2 2 2M5 11v8M13 5h8M13 9h8M13 13h5"/></svg></div><h3>Parking &amp; Wi-Fi</h3><p>On-site parking and free Wi-Fi for all your guests.</p></div>
-      <div class="fact reveal" data-d="2"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8Z"/></svg></div><h3>Central location</h3><p>Minutes from Mannheim, Ludwigshafen, Speyer &amp; Heidelberg.</p></div>
-      <div class="fact reveal" data-d="3"><div class="fi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div><h3>Morning after</h3><p>A relaxed breakfast together to round off the celebration.</p></div>
+      <div class="fact reveal"><div class="fi"><img src="../icons/05-wedding-island.png" alt="" loading="lazy"></div><h3>Wedding island</h3><p>A ceremony location surrounded by the lake — rare and unforgettable.</p></div>
+      <div class="fact reveal" data-d="1"><div class="fi"><img src="../icons/06-guest-rooms-hotel-rooms.png" alt="" loading="lazy"></div><h3>Hotel rooms</h3><p>Overnight stays for you and your guests, some with lake view.</p></div>
+      <div class="fact reveal" data-d="2"><div class="fi"><img src="../icons/14-in-house-catering.png" alt="" loading="lazy"></div><h3>In-house catering</h3><p>Restaurant kitchen, menus, buffets and beverage packages.</p></div>
+      <div class="fact reveal" data-d="3"><div class="fi"><img src="../icons/15-weather-safe-check.png" alt="" loading="lazy"></div><h3>Weather-safe</h3><p>Indoor &amp; outdoor spaces with a beautiful plan B, always.</p></div>
+      <div class="fact reveal"><div class="fi"><img src="../icons/11-planning-support.png" alt="" loading="lazy"></div><h3>Planning support</h3><p>An experienced team guiding every step, calmly.</p></div>
+      <div class="fact reveal" data-d="1"><div class="fi"><img src="../icons/16-parking-wifi.png" alt="" loading="lazy"></div><h3>Parking &amp; Wi-Fi</h3><p>On-site parking and free Wi-Fi for all your guests.</p></div>
+      <div class="fact reveal" data-d="2"><div class="fi"><img src="../icons/17-central-location.png" alt="" loading="lazy"></div><h3>Central location</h3><p>Minutes from Mannheim, Ludwigshafen, Speyer &amp; Heidelberg.</p></div>
+      <div class="fact reveal" data-d="3"><div class="fi"><img src="../icons/18-morning-after.png" alt="" loading="lazy"></div><h3>Morning after</h3><p>A relaxed breakfast together to round off the celebration.</p></div>
     </div>
   </div>
 </section>
@@ -1433,6 +1689,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   <button class="lb-nav next" id="lbNext" aria-label="Next">›</button>
 </div>
 
+<!-- TEMP · Events mega-menu style switcher (preview only — delete this block, the .megaswitch CSS and its JS once a style is chosen) -->
+<div class="megaswitch" id="megaSwitch" aria-label="Events menu style preview">
+  <b>Events menu</b>
+  <div class="ms-btns">
+    <button type="button" data-s="1" title="Style 1 · Editorial cards">1</button>
+    <button type="button" data-s="2" title="Style 2 · Classic list + feature">2</button>
+    <button type="button" data-s="3" title="Style 3 · Dark luxe grid">3</button>
+  </div>
+  <button type="button" class="ms-x" title="Hide this preview switcher" aria-label="Hide preview switcher">&times;</button>
+</div>
+
 <script>
 /* ---------- progressive-enhancement flag (the .reveal hidden state only applies with .js) ---------- */
 document.documentElement.classList.add('js');
@@ -1472,6 +1739,52 @@ drawer.addEventListener('keydown',e=>{
     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
   }
 });
+
+/* ---------- events mega menu (hover + click + keyboard, accessible) ---------- */
+(function(){
+  const wrap=document.querySelector('.has-mega'); if(!wrap)return;
+  const trigger=wrap.querySelector('.mega-trigger');
+  const mega=wrap.querySelector('.mega');
+  const megaSwitch=document.getElementById('megaSwitch'); /* TEMP preview pill */
+  let hoverTimer=null;
+  const isOpen=()=>wrap.classList.contains('open');
+  const open=()=>{wrap.classList.add('open');trigger.setAttribute('aria-expanded','true');};
+  /* closing the menu always brings the style selector back */
+  const close=()=>{wrap.classList.remove('open');trigger.setAttribute('aria-expanded','false');if(megaSwitch)megaSwitch.classList.remove('is-hidden');};
+  wrap.addEventListener('mouseenter',()=>{clearTimeout(hoverTimer);open();});
+  wrap.addEventListener('mouseleave',()=>{hoverTimer=setTimeout(close,160);});
+  /* tap/click toggles (don't follow the link — the panel's own links navigate).
+     Opening via a real nav click hides the TEMP style selector so it's out of the way. */
+  trigger.addEventListener('click',e=>{e.preventDefault();if(isOpen()){close();}else{open();if(megaSwitch)megaSwitch.classList.add('is-hidden');}});
+  trigger.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'||e.key===' '){e.preventDefault();open();const f=mega.querySelector(FOCUSABLE);if(f)f.focus();}
+  });
+  wrap.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen()){close();trigger.focus();}});
+  wrap.addEventListener('focusout',()=>{setTimeout(()=>{if(!wrap.contains(document.activeElement))close();},0);});
+  document.addEventListener('click',e=>{if(isOpen()&&!wrap.contains(e.target)&&!e.target.closest('.megaswitch'))close();});
+  window.addEventListener('scroll',()=>{if(isOpen())close();},{passive:true});
+})();
+
+/* ---------- TEMP: events mega style switcher (remove with #megaSwitch + its CSS once chosen) ---------- */
+(function(){
+  const sw=document.getElementById('megaSwitch'); if(!sw)return;
+  const root=document.documentElement;
+  const btns=[...sw.querySelectorAll('button[data-s]')];
+  const set=(n)=>{
+    root.setAttribute('data-megastyle',n);
+    btns.forEach(b=>b.classList.toggle('on',b.dataset.s===n));
+    try{localStorage.setItem('darstein-megastyle',n);}catch(e){}
+  };
+  let saved=null; try{saved=localStorage.getItem('darstein-megastyle');}catch(e){}
+  set(saved||root.getAttribute('data-megastyle')||'1');
+  btns.forEach(b=>b.addEventListener('click',()=>{
+    set(b.dataset.s);
+    /* open the menu so the picked style is visible immediately */
+    const wrap=document.querySelector('.has-mega');
+    if(wrap){wrap.classList.add('open');const t=wrap.querySelector('.mega-trigger');if(t)t.setAttribute('aria-expanded','true');}
+  }));
+  const x=sw.querySelector('.ms-x'); if(x)x.addEventListener('click',()=>sw.remove());
+})();
 
 /* ---------- reveal on scroll ---------- */
 const reveals=document.querySelectorAll('.reveal');
@@ -1552,6 +1865,44 @@ document.querySelectorAll('.offer').forEach(off=>{
     if(offerTag)offerTag.textContent=off.dataset.name;
   });
 });
+
+/* ---------- testimonial carousel (slow crossfade slider + per-slide background) ---------- */
+(function(){
+  const root=document.getElementById('story'); if(!root)return;
+  const track=root.querySelector('.quote-track');
+  const slides=[...root.querySelectorAll('.quote-slide')];
+  if(!track||!slides.length)return;
+  const dots=[...root.querySelectorAll('.quote-dot')];
+  const bgs=[...root.querySelectorAll('.story-bg img')];
+  const view=root.querySelector('.quote-view');
+  const DELAY=13000;                /* longer dwell between slides */
+  let i=0,timer=null;
+  const go=(n)=>{
+    i=(n+slides.length)%slides.length;
+    track.style.transform='translateX('+(-i*100)+'%)';
+    dots.forEach((d,k)=>{d.classList.toggle('on',k===i);d.setAttribute('aria-selected',k===i?'true':'false');});
+    slides.forEach((s,k)=>s.setAttribute('aria-hidden',k===i?'false':'true'));
+    bgs.forEach((b,k)=>b.classList.toggle('on',k===i));
+  };
+  const start=()=>{if(REDUCED)return;timer=setInterval(()=>go(i+1),DELAY);};
+  const stop=()=>{if(timer){clearInterval(timer);timer=null;}};
+  const restart=()=>{stop();start();};
+  const prev=root.querySelector('.quote-prev'),next=root.querySelector('.quote-next');
+  if(prev)prev.addEventListener('click',()=>{go(i-1);restart();});
+  if(next)next.addEventListener('click',()=>{go(i+1);restart();});
+  dots.forEach((d,k)=>d.addEventListener('click',()=>{go(k);restart();}));
+  root.addEventListener('mouseenter',stop);root.addEventListener('mouseleave',start);
+  root.addEventListener('focusin',stop);root.addEventListener('focusout',start);
+  if(view){
+    view.setAttribute('tabindex','0');
+    view.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'){go(i-1);restart();}else if(e.key==='ArrowRight'){go(i+1);restart();}});
+    let x0=null;
+    view.addEventListener('pointerdown',e=>{x0=e.clientX;});
+    view.addEventListener('pointerup',e=>{if(x0===null)return;const dx=e.clientX-x0;if(Math.abs(dx)>40){go(dx<0?i+1:i-1);restart();}x0=null;});
+  }
+  if(REDUCED)track.style.transition='none';
+  go(0);start();
+})();
 
 /* ---------- gallery lightbox (accessible: focus move + restore + trap) ---------- */
 const lb=document.getElementById('lightbox'),lbImg=document.getElementById('lbImg'),lbClose=document.getElementById('lbClose');
