@@ -94,23 +94,33 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 /* champagne tint for ornaments placed on the 2 dark sections */
 .orn-light{filter:var(--orn-champ)}
 
-/* buttons */
+/* buttons — "Champagne Sheen" treatment: diagonal light sweep + soft lift + glow */
 .btn{
-  display:inline-flex;align-items:center;gap:11px;
+  position:relative;z-index:0;overflow:hidden;
+  display:inline-flex;align-items:center;justify-content:center;gap:11px;
   font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
-  padding:16px 30px;border-radius:50px;border:1px solid transparent;transition:.35s var(--ease);white-space:nowrap;
+  padding:16px 30px;border-radius:50px;border:1px solid transparent;white-space:nowrap;
+  transition:transform .4s var(--ease),box-shadow .4s var(--ease),background-color .4s var(--ease),
+             color .4s var(--ease),border-color .4s var(--ease),filter .4s var(--ease);
 }
-.btn .ar{transition:transform .35s var(--ease)}
+/* the champagne sheen — sits above the fill, below the label, and sweeps across on hover */
+.btn::before{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;z-index:-1;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);
+  transition:left .8s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+.btn:hover::before{left:135%}
+.btn .ar{transition:transform .4s var(--ease)}
 .btn:hover .ar{transform:translateX(4px)}
-.btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#3a2a0c;box-shadow:0 14px 30px -14px rgba(200,164,107,.65)}
-.btn-gold:hover{filter:brightness(1.06);transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold-2),var(--gold));color:#3a2a0c;box-shadow:0 14px 30px -14px rgba(200,164,107,.6)}
+.btn-gold:hover{filter:brightness(1.05);box-shadow:0 22px 44px -16px rgba(200,164,107,.72)}
 .btn-burgundy{background:var(--burgundy);color:#fff}
-.btn-burgundy:hover{background:var(--burgundy-2);transform:translateY(-2px)}
+.btn-burgundy:hover{background:var(--burgundy-2);box-shadow:0 22px 44px -18px rgba(139,14,35,.5)}
 .btn-ghost{border-color:rgba(255,255,255,.55);color:#fff}
-.btn-ghost:hover{background:#fff;color:var(--burgundy);border-color:#fff}
+.btn-ghost:hover{background:#fff;color:var(--burgundy);border-color:#fff;box-shadow:0 20px 42px -18px rgba(0,0,0,.32)}
 .btn-outline{border-color:var(--burgundy);color:var(--burgundy)}
-.btn-outline:hover{background:var(--burgundy);color:#fff}
+.btn-outline:hover{background:var(--burgundy);color:#fff;border-color:var(--burgundy);box-shadow:0 20px 42px -18px rgba(139,14,35,.4)}
 .btn-lg{padding:18px 36px;font-size:13px}
+@media(prefers-reduced-motion:reduce){.btn{transition:none}.btn:hover{transform:none}.btn::before{display:none}}
 
 /* branded image placeholder (for folders without real images yet) */
 .ph{
@@ -136,7 +146,7 @@ h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;l
 .reveal[data-d="5"]{transition-delay:.4s}
 
 /* ============================ TOP BAR ============================ */
-.topbar{background:var(--burgundy-deep);color:rgba(255,255,255,.82);font-size:12px;letter-spacing:.04em}
+.topbar{position:relative;z-index:70;background:var(--burgundy-deep);color:rgba(255,255,255,.82);font-size:12px;letter-spacing:.04em}
 .topbar .wrap{display:flex;align-items:center;justify-content:space-between;min-height:42px;gap:18px}
 .topbar a:hover{color:var(--gold-2)}
 .topbar .tb-left{display:flex;gap:24px;align-items:center}
@@ -752,6 +762,45 @@ html:not(.js) .cer-panel:hover .cer-reveal{opacity:1;transform:none}
 @media(max-width:880px){.more-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.more-grid{grid-template-columns:1fr}}
 
+/* ============================ UPCOMING EVENTS ============================ */
+.events{background:var(--cream)}
+.ev-2col{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(30px,5vw,64px);
+  align-items:stretch;margin-top:50px}
+
+/* left · burgundy gradient panel */
+.ev-panel{position:relative;overflow:hidden;border-radius:var(--r);box-shadow:var(--shadow-sm);color:#fff;
+  display:flex;flex-direction:column;justify-content:center;min-height:430px;
+  background:radial-gradient(135% 130% at 16% 14%,var(--burgundy-2) 0%,var(--burgundy) 34%,var(--burgundy-3) 68%,#37040d 100%)}
+.ev-panel-in{position:relative;z-index:2;padding:clamp(32px,5vw,52px)}
+.ev-panel .eyebrow{color:var(--gold-pale)}
+.ev-panel .eyebrow::before{filter:var(--orn-champ)}
+.ev-panel .eyebrow::after{content:"";width:58px;height:14px;
+  background:url("../Vintage ornament PNG/New/long_thin_line_with_dot_left.webp") left center/contain no-repeat;
+  transform:rotate(180deg);filter:var(--orn-champ);opacity:.9}
+.ev-panel h2{font-family:var(--serif);font-weight:600;color:#fff;font-size:clamp(1.95rem,3.4vw,2.7rem);line-height:1.05;margin:16px 0 0}
+.ev-panel .lead{color:rgba(255,249,240,.85);font-size:1rem;margin:14px 0 0;max-width:34ch}
+.ev-panel .btn{margin-top:26px}
+.ev-orn{position:absolute;right:16px;bottom:14px;width:clamp(86px,10vw,116px);opacity:.5;
+  transform:scaleY(-1);pointer-events:none;z-index:1}
+
+/* right · vertical agenda */
+.ev-agenda .ag-kicker{display:inline-block;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--gold-ink);margin-bottom:22px}
+.ag-line{position:relative;padding-left:40px}
+.ag-line::before{content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;
+  background:linear-gradient(var(--gold),rgba(200,164,107,.25))}
+.ag-item{position:relative;padding:0 0 26px}
+.ag-item:last-child{padding-bottom:0}
+.ag-item::before{content:"";position:absolute;left:-34px;top:4px;width:13px;height:13px;border-radius:50%;
+  background:var(--burgundy);border:3px solid var(--cream);box-shadow:0 0 0 3px rgba(139,14,35,.18)}
+.ag-meta{display:flex;align-items:center;gap:12px;font-family:var(--sans);font-size:11px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
+.ag-date{color:var(--gold-ink)} .ag-cat{color:var(--burgundy)}
+.ag-item h3{font-family:var(--serif);font-weight:600;font-size:1.32rem;line-height:1.14;color:var(--charcoal);margin:0 0 4px}
+.ag-item p{font-size:12.5px;color:var(--muted);margin:0;max-width:50ch}
+@media(max-width:880px){.ev-2col{grid-template-columns:1fr;gap:32px;margin-top:42px}.ev-panel{min-height:340px}}
+@media(max-width:680px){.ev-orn{width:72px;opacity:.4}}
+
 /* ============================ INSTAGRAM STRIP ============================ */
 .insta{background:var(--cream);padding:clamp(60px,8vw,110px) 0 0}
 .insta-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:46px}
@@ -848,7 +897,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
       </a>
     </div>
     <div class="tb-right">
-      <span class="lang"><a href="#" class="">DE</a><a href="#" class="on">EN</a></span>
+      <span class="lang"><a href="#" data-lang="de">DE</a><a href="#" class="on" data-lang="en">EN</a></span>
       <span class="socials">
         <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.6.2 1 .46 1.4.86.4.4.66.8.86 1.4.17.4.36 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2-.2.6-.46 1-.86 1.4-.4.4-.8.66-1.4.86-.4.17-1 .36-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42-.6-.2-1-.46-1.4-.86-.4-.4-.66-.8-.86-1.4-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.2-.6.46-1 .86-1.4.4-.4.8-.66 1.4-.86.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 4.86A4.94 4.94 0 1 0 12 17a4.94 4.94 0 0 0 0-9.94Zm0 1.8a3.14 3.14 0 1 1 0 6.28 3.14 3.14 0 0 1 0-6.28Zm5.15-.7a1.15 1.15 0 1 1-2.3 0 1.15 1.15 0 0 1 2.3 0Z"/></svg></a>
         <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg></a>
@@ -1328,7 +1377,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
             <li><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg> Room block &amp; breakfast</li>
           </ul></div>
         </button>
-        <a href="#contact" class="btn btn-outline" style="margin-top:8px">Request Individual Offer <span class="ar" aria-hidden="true">→</span></a>
+        <a href="#contact" class="btn btn-outline" style="margin-top:8px;justify-self:start">Request Individual Offer <span class="ar" aria-hidden="true">→</span></a>
       </div>
       <div class="offers-media reveal" data-d="1">
         <span class="otag" id="offerTag">Intimate Wedding</span>
@@ -1432,7 +1481,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         <span class="eyebrow">The Blue Adriatic</span>
         <h2 class="h2" style="margin-top:18px;font-size:clamp(1.9rem,3.6vw,3rem)">Right on the lake, central to everything</h2>
         <div class="kicker-line"></div>
-        <p style="color:var(--muted)">Hotel Darstein sits in the heart of the “<span lang="de">Blaue Adria</span>” nature and recreation area in Altrip — a calm lakeside setting that is still minutes from the cities of the Rhine-Neckar region.</p>
+        <p style="color:var(--muted)" data-de='Das Hotel Darstein liegt im Herzen des Natur- und Erholungsgebiets „<span lang="de">Blaue Adria</span>“ in Altrip — eine ruhige Lage am See, nur wenige Minuten von den Städten der Region Rhein-Neckar entfernt.'>Hotel Darstein sits in the heart of the “<span lang="de">Blaue Adria</span>” nature and recreation area in Altrip — a calm lakeside setting that is still minutes from the cities of the Rhine-Neckar region.</p>
         <div class="loc-cities">
           <div class="loc-city"><b>~10<small style="font-size:.6em;vertical-align:super">km</small></b><span>Ludwigshafen &amp; Mannheim</span></div>
           <div class="loc-city"><b>~15<small style="font-size:.6em;vertical-align:super">km</small></b><span>Speyer</span></div>
@@ -1441,7 +1490,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         </div>
         <div class="loc-addr">
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-          <div><b>Zum Strandhotel 10, 67122 Altrip</b><br><span style="color:var(--muted);font-size:13.5px">Please note: access via the street “<span lang="de">An der Rennbahn</span>”.</span></div>
+          <div><b>Zum Strandhotel 10, 67122 Altrip</b><br><span style="color:var(--muted);font-size:13.5px" data-de='Bitte beachten: Zufahrt über die Straße „<span lang="de">An der Rennbahn</span>“.'>Please note: access via the street “<span lang="de">An der Rennbahn</span>”.</span></div>
         </div>
         <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Zum+Strandhotel+10,+67122+Altrip" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:28px">Get Directions <span class="ar" aria-hidden="true">→</span></a>
       </div>
@@ -1452,7 +1501,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     <div class="loc-map reveal" id="locMap">
       <div class="map-cover" id="mapCover">
         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-        <p><strong>Zum Strandhotel 10, 67122 Altrip</strong><br>Access via <span lang="de">An der Rennbahn</span> · directly on the Blue Adriatic</p>
+        <p data-de='<strong>Zum Strandhotel 10, 67122 Altrip</strong><br>Zufahrt über <span lang="de">An der Rennbahn</span> · direkt an der Blauen Adria'><strong>Zum Strandhotel 10, 67122 Altrip</strong><br>Access via <span lang="de">An der Rennbahn</span> · directly on the Blue Adriatic</p>
         <button type="button" class="btn btn-burgundy" id="loadMap">Show interactive map <span class="ar" aria-hidden="true">→</span></button>
         <small>Loads Google&nbsp;Maps — third-party content (cookies may be set)</small>
       </div>
@@ -1614,6 +1663,56 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
         <img loading="lazy" src="../hotel-darstein-placeholder-images/19-secondary-services/Hotel_gift_voucher_concept_with_202606231527.jpeg" alt="Elegant hotel gift voucher concept">
         <div class="svc-body"><h3>Gift vouchers</h3><p>Give a stay, a dinner or a celebration by the lake.</p><a href="#contact">Buy a voucher <span class="ar" aria-hidden="true">→</span></a></div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ UPCOMING EVENTS ============================ -->
+<!-- TEMP / PLACEHOLDER DATA: the 4 agenda entries below are illustrative. Replace the category,
+     date, title and description with real upcoming events. "View All Events" currently goes to
+     #contact — point it at a real /events page once built. -->
+<section class="events section" id="events">
+  <div class="wrap">
+    <div class="ev-2col">
+
+      <!-- left · burgundy panel -->
+      <div class="ev-panel reveal">
+        <div class="ev-panel-in">
+          <span class="eyebrow">Upcoming Events</span>
+          <h2>Join Us Beyond Weddings</h2>
+          <p class="lead">Seasonal dining, live music and celebrations on the Blue Adriatic.</p>
+          <a href="#contact" class="btn btn-ghost">View All Events <span class="ar" aria-hidden="true">→</span></a>
+        </div>
+        <img class="ev-orn orn-light" src="../Vintage ornament PNG/New/hanging_scroll_corner_with_tail.webp" alt="" aria-hidden="true">
+      </div>
+
+      <!-- right · vertical agenda -->
+      <div class="ev-agenda reveal" data-d="1">
+        <span class="ag-kicker">What&rsquo;s On · 2026</span>
+        <div class="ag-line">
+          <div class="ag-item">
+            <div class="ag-meta"><span class="ag-date">Fri · 24 Jul 2026</span><span class="ag-cat">Dining</span></div>
+            <h3>Lakeside Summer Wine Dinner</h3>
+            <p>Regional wines paired with a seasonal four-course menu on the terrace.</p>
+          </div>
+          <div class="ag-item">
+            <div class="ag-meta"><span class="ag-date">Sat · 22 Aug 2026</span><span class="ag-cat">Live Music</span></div>
+            <h3>Live Jazz on the Terrace</h3>
+            <p>Sparkling wine and live jazz drifting over the lake into the evening.</p>
+          </div>
+          <div class="ag-item">
+            <div class="ag-meta"><span class="ag-date">Sat · 19 Dec 2026</span><span class="ag-cat">Celebration</span></div>
+            <h3>Festive Christmas Gala</h3>
+            <p>A candlelit gala dinner with seasonal menus to close the year in style.</p>
+          </div>
+          <div class="ag-item">
+            <div class="ag-meta"><span class="ag-date">Sun · 14 Feb 2027</span><span class="ag-cat">Dining</span></div>
+            <h3>Valentine&rsquo;s Lake Dinner</h3>
+            <p>An intimate four-course dinner for two by the water.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1874,7 +1973,7 @@ document.querySelectorAll('.dtab').forEach(tab=>{
     imgs.forEach((im,k)=>im.classList.toggle('on',k===i));
     steps.forEach((s,k)=>{s.classList.toggle('active',k===i);s.classList.toggle('on',k<=i);});
     if(num)num.textContent=(i+1)+' / '+steps.length;
-    if(tlabel)tlabel.textContent=times[i];
+    if(tlabel){const tEl=steps[i].querySelector('.time');tlabel.textContent=tEl?tEl.textContent:times[i];}
     if(bar)bar.style.width=((i+1)/steps.length*100)+'%';
     const sr=stepsEl.getBoundingClientRect(),dr=steps[i].querySelector('.tl-dot').getBoundingClientRect();
     stepsEl.style.setProperty('--fill',Math.max(0,(dr.top+dr.height/2)-sr.top)+'px');
@@ -1882,6 +1981,7 @@ document.querySelectorAll('.dtab').forEach(tab=>{
   const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting)setActive(+e.target.dataset.i);}),{rootMargin:'-46% 0px -46% 0px',threshold:0});
   steps.forEach((s,i)=>{s.dataset.i=i;io.observe(s);});
   let rid;window.addEventListener('resize',()=>{cancelAnimationFrame(rid);rid=requestAnimationFrame(()=>{const a=steps.findIndex(s=>s.classList.contains('active'));setActive(a<0?0:a);});});
+  document.addEventListener('langchange',()=>{const a=steps.findIndex(s=>s.classList.contains('active'));setActive(a<0?0:a);});
   setActive(0);
 })();
 
@@ -1893,7 +1993,7 @@ document.querySelectorAll('.offer').forEach(off=>{
     document.querySelectorAll('.offers-media img').forEach(i=>i.classList.remove('on'));
     off.classList.add('on');off.setAttribute('aria-pressed','true');
     document.getElementById(off.dataset.oimg).classList.add('on');
-    if(offerTag)offerTag.textContent=off.dataset.name;
+    if(offerTag){const h=off.querySelector('h3');offerTag.textContent=h?h.textContent:off.dataset.name;}
   });
 });
 
@@ -1995,6 +2095,505 @@ inqForm.addEventListener('submit',e=>{
   const ok=document.getElementById('formSuccess');
   ok.classList.add('show');ok.setAttribute('role','status');ok.setAttribute('tabindex','-1');ok.focus();
 });
+</script>
+
+<script>
+/* ============================ I18N · EN / DE LANGUAGE SWITCH ============================
+   Makes the top-bar EN/DE control functional.
+   - The HTML source language is English; German lives in the T dictionary below.
+   - Switching swaps visible text nodes, selected attributes (placeholder, aria-label),
+     a few mixed-markup elements (via inline data-de), plus <title>, the meta description
+     and <html lang>. The choice persists in localStorage.
+   - Append ?i18ndebug to the URL to log any strings that are missing a translation.
+   ====================================================================================== */
+(function(){
+  var T = {
+    /* top bar / header / nav */
+    'Reservation':'Reservierung',
+    'Events':'Veranstaltungen',
+    'About Us':'Über uns',
+    'Contact Us':'Kontakt',
+    'Request Viewing':'Besichtigung anfragen',
+    'View all events':'Alle Veranstaltungen ansehen',
+    'Beyond weddings':'Nicht nur Hochzeiten',
+    'A hotel for every occasion':'Ein Hotel für jeden Anlass',
+    'Private celebrations':'Private Feiern',
+    'Birthdays, anniversaries & family festivities.':'Geburtstage, Jubiläen & Familienfeste.',
+    'Restaurant & terrace':'Restaurant & Terrasse',
+    'Lakeside dining with a view over the water.':'Speisen am See mit Blick über das Wasser.',
+    'Conferences & seminars':'Tagungen & Seminare',
+    'Meeting spaces, technology & catering.':'Tagungsräume, Technik & Catering.',
+    'Club & party area':'Club- & Partybereich',
+    'After-parties & dancing into the night.':'After-Partys & Tanz bis tief in die Nacht.',
+    'Hotel stay & leisure':'Hotelübernachtung & Freizeit',
+    'Romantic lakeside escapes & breakfast.':'Romantische Auszeiten am See & Frühstück.',
+    'Gift vouchers':'Geschenkgutscheine',
+    'Give a stay, a dinner or a celebration.':'Verschenken Sie eine Übernachtung, ein Dinner oder eine Feier.',
+    'Plan your event':'Planen Sie Ihre Veranstaltung',
+    'Celebrate by the lake':'Feiern Sie am See',
+    'Tell us your occasion and we’ll tailor the spaces, menu and overnight stay to match.':'Sagen Sie uns Ihren Anlass und wir stimmen Räume, Menü und Übernachtung darauf ab.',
+    'Enquire now':'Jetzt anfragen',
+
+    /* hero */
+    'The Wedding Hotel on the Blue Adriatic':'Das Hochzeitshotel an der Blauen Adria',
+    'Your dream wedding':'Ihre Traumhochzeit',
+    'by the lake':'am See',
+    'Say “I do” on our wedding island, celebrate on the terrace by the water, and let your guests stay the weekend — all in one romantic place in Altrip, near Mannheim, Ludwigshafen & Speyer.':'Geben Sie sich auf unserer Hochzeitsinsel das Ja-Wort, feiern Sie auf der Terrasse am Wasser und lassen Sie Ihre Gäste das ganze Wochenende bleiben — alles an einem romantischen Ort in Altrip, nahe Mannheim, Ludwigshafen & Speyer.',
+    'Request Wedding Viewing':'Hochzeitsbesichtigung anfragen',
+    'View Wedding Options':'Hochzeitsangebote ansehen',
+    'Ceremony on the water':'Trauung am Wasser',
+    'Rooms for your guests':'Zimmer für Ihre Gäste',
+    'Indoor & outdoor, rain-safe':'Drinnen & draußen, wettersicher',
+    'Scroll':'Scrollen',
+    'Image':'Bild',
+
+    /* intro / about */
+    'A wedding tradition by the water':'Hochzeitstradition am Wasser',
+    'Weddings & Celebrations':'Hochzeiten & Feiern',
+    'A celebration of love, designed around you':'Eine Feier der Liebe, ganz auf Sie zugeschnitten',
+    'Nestled between Ludwigshafen, Speyer and Mannheim — right on the idyllic “Blue Adriatic” — Hotel Darstein is more than a venue. It is a complete lakeside wedding destination where the ceremony, reception, dinner, party and overnight stay all happen in one romantic place.':'Eingebettet zwischen Ludwigshafen, Speyer und Mannheim — direkt an der idyllischen „Blauen Adria“ — ist das Hotel Darstein mehr als eine Location. Es ist ein komplettes Hochzeitsziel am See, an dem Trauung, Empfang, Dinner, Party und Übernachtung an einem romantischen Ort zusammenkommen.',
+    'From the first viewing to the morning-after breakfast, our experienced team carries the details so you can simply be present. Beautiful by the water, warm in every season, and effortless from start to finish.':'Von der ersten Besichtigung bis zum Frühstück am Morgen danach kümmert sich unser erfahrenes Team um jedes Detail, damit Sie den Tag einfach genießen können. Schön am Wasser, herzlich zu jeder Jahreszeit und mühelos von Anfang bis Ende.',
+    'Wedding island & lakefront ceremony':'Hochzeitsinsel & Trauung am Seeufer',
+    'Hotel rooms for you & your guests':'Hotelzimmer für Sie & Ihre Gäste',
+    'Restaurant-quality catering in-house':'Catering in Restaurantqualität aus eigener Küche',
+    'Calm, complete planning support':'Entspannte, umfassende Planungsbegleitung',
+    'Your Darstein family & team':'Ihre Darstein-Familie & Ihr Team',
+    'Ceremony, dinner, party & stay in one place':'Trauung, Dinner, Party & Übernachtung an einem Ort',
+    'Guests, from intimate to grand':'Gäste, von intim bis groß',
+    'Stay':'Übernachten',
+    'Rooms & suites on-site, by the water':'Zimmer & Suiten direkt am Wasser',
+    'Days a year — every season, rain-safe':'Tage im Jahr — jede Saison, wettersicher',
+
+    /* wedding island */
+    'Our Signature':'Unser Markenzeichen',
+    'Say “I do” on the':'Geben Sie sich das Ja-Wort auf der',
+    'wedding island':'Hochzeitsinsel',
+    'Surrounded by calm water and framed by greenery, our wedding island is the moment guests never forget. A floral arch, rows of ivory chairs, the lake reflecting the light — a ceremony setting very few venues can offer.':'Umgeben von ruhigem Wasser und eingerahmt von Grün, ist unsere Hochzeitsinsel der Moment, den Ihre Gäste nie vergessen werden. Ein Blumenbogen, Reihen elfenbeinfarbener Stühle, der See, der das Licht spiegelt — ein Trauort, wie ihn nur wenige Locations bieten können.',
+    'A ceremony location literally surrounded by the lake':'Ein Trauort, der buchstäblich vom See umgeben ist',
+    'Civil, free or symbolic ceremonies — your choice':'Standesamtliche, freie oder symbolische Trauungen — ganz nach Ihrer Wahl',
+    'Unforgettable golden-hour photography by the water':'Unvergessliche Fotos zur goldenen Stunde am Wasser',
+    'Seamless walk to terrace reception & dinner':'Nahtloser Übergang zu Empfang & Dinner auf der Terrasse',
+    'Plan Your Ceremony':'Planen Sie Ihre Trauung',
+
+    /* why */
+    'Why couples choose Darstein':'Warum sich Paare für Darstein entscheiden',
+    'Everything your wedding needs,':'Alles, was Ihre Hochzeit braucht,',
+    'in one place by the lake':'an einem Ort am See',
+    'Many venues offer a hall or a garden. Darstein brings the lakefront, the island, the catering, the hotel rooms and the planning together — so your whole day flows in one beautiful location.':'Viele Locations bieten einen Saal oder einen Garten. Darstein vereint Seeufer, Insel, Catering, Hotelzimmer und Planung — damit Ihr ganzer Tag an einem wunderschönen Ort zusammenfließt.',
+    'Wedding island':'Hochzeitsinsel',
+    'Exchange vows on a ceremony island surrounded by calm water — a setting very few venues can offer.':'Geben Sie sich das Ja-Wort auf einer Hochzeitsinsel, umgeben von ruhigem Wasser — ein Rahmen, den nur wenige Locations bieten.',
+    'Guest rooms':'Gästezimmer',
+    'Comfortable hotel rooms and suites — some with lake view — so loved ones simply stay the weekend.':'Komfortable Hotelzimmer und Suiten — einige mit Seeblick — damit Ihre Liebsten einfach das Wochenende bleiben können.',
+    'Menu & buffet':'Menü & Buffet',
+    'Seasonal regional and international cuisine, menus, buffets and beverage packages — all in-house.':'Saisonale regionale und internationale Küche, Menüs, Buffets und Getränkepakete — alles aus eigenem Haus.',
+    'Indoor & outdoor':'Drinnen & draußen',
+    'Air-conditioned, divisible event rooms mean your celebration is beautiful in any weather.':'Klimatisierte, teilbare Veranstaltungsräume sorgen dafür, dass Ihre Feier bei jedem Wetter schön ist.',
+    'Planning support':'Planungsbegleitung',
+    'From menu tasting to décor, cake, DJ and timing — an experienced team keeps everything calm.':'Vom Menü-Probeessen über Deko, Torte und DJ bis zum Ablauf — ein erfahrenes Team behält alles entspannt im Griff.',
+    'Lakeside reception':'Empfang am See',
+    'Toast and celebrate on the terrace by the water — then dine and dance just a few steps away.':'Stoßen Sie auf der Terrasse am Wasser an und feiern Sie — und nur wenige Schritte weiter wird gespeist und getanzt.',
+
+    /* gallery */
+    'Wedding moments':'Hochzeitsmomente',
+    'Moments worth remembering':'Momente, die in Erinnerung bleiben',
+
+    /* journey */
+    'Your wedding day':'Ihr Hochzeitstag',
+    'From first light to the last dance':'Vom ersten Licht bis zum letzten Tanz',
+    'Picture the whole day flowing in one place — no transfers, no rush, just one beautiful location from morning to the next breakfast.':'Stellen Sie sich vor, wie der ganze Tag an einem Ort zusammenfließt — keine Transfers, keine Hektik, nur ein wunderschöner Ort vom Morgen bis zum Frühstück am nächsten Morgen.',
+    'Now':'Jetzt',
+    'Morning':'Morgens',
+    'Midday':'Mittags',
+    'Afternoon':'Nachmittags',
+    'Golden hour':'Goldene Stunde',
+    'Evening':'Abends',
+    'Night':'Nachts',
+    'Overnight':'Übernachtung',
+    'Next morning':'Am nächsten Morgen',
+    'Arrival & preparation':'Ankunft & Vorbereitung',
+    'Arrive in calm — soft morning light, your suite by the water, and time to get ready.':'Kommen Sie in Ruhe an — sanftes Morgenlicht, Ihre Suite am Wasser und Zeit, sich fertig zu machen.',
+    'Exchange your vows on the wedding island or lakeside, surrounded by those you love.':'Geben Sie sich auf der Hochzeitsinsel oder am Seeufer das Ja-Wort, umgeben von Ihren Liebsten.',
+    'Sparkling reception':'Sektempfang',
+    'Toast on the terrace as guests mingle with the lake glowing behind them.':'Stoßen Sie auf der Terrasse an, während Ihre Gäste beisammenstehen und der See hinter ihnen leuchtet.',
+    'Portraits by the lake':'Porträts am See',
+    'Slip away for a few minutes — the water and golden light do the rest.':'Ziehen Sie sich für ein paar Minuten zurück — das Wasser und das goldene Licht erledigen den Rest.',
+    'Dinner & speeches':'Dinner & Reden',
+    'Seasonal menus or generous buffets served in an elegant, candlelit event room.':'Saisonale Menüs oder großzügige Buffets, serviert in einem eleganten, kerzenbeleuchteten Festsaal.',
+    'Dance the night away':'Tanzen Sie bis in die Nacht',
+    'Celebrate late in our party area — then your bed is just a few steps away.':'Feiern Sie bis spät in unserem Partybereich — Ihr Bett ist nur wenige Schritte entfernt.',
+    'Stay the night':'Bleiben Sie über Nacht',
+    'No taxis home — you and your guests simply walk to comfortable rooms by the lake.':'Keine Taxifahrten nach Hause — Sie und Ihre Gäste gehen einfach zu Ihren komfortablen Zimmern am See.',
+    'Breakfast together':'Gemeinsames Frühstück',
+    'Reunite with your guests over a relaxed breakfast and relive every moment.':'Treffen Sie Ihre Gäste bei einem entspannten Frühstück wieder und lassen Sie jeden Moment Revue passieren.',
+
+    /* ceremony options */
+    'Ceremony options':'Trauungsoptionen',
+    'However you wish to marry':'Wie auch immer Sie heiraten möchten',
+    'Civil, church, free or symbolic — by the water or under cover. Choose the ceremony that feels like you.':'Standesamtlich, kirchlich, frei oder symbolisch — am Wasser oder geschützt unter Dach. Wählen Sie die Trauung, die zu Ihnen passt.',
+    'Civil ceremony':'Standesamtliche Trauung',
+    'An official outdoor ceremony in an elegant lakeside setting with seated guests.':'Eine offizielle Trauung im Freien in elegantem Ambiente am See mit sitzenden Gästen.',
+    'Free ceremony':'Freie Trauung',
+    'A personal, freely-spoken ceremony by the calm water with a floral arch.':'Eine persönliche, frei gehaltene Trauung am ruhigen Wasser mit Blumenbogen.',
+    'Symbolic & island':'Symbolisch & Insel',
+    'A symbolic ceremony on the wedding island, framed by water and greenery.':'Eine symbolische Trauung auf der Hochzeitsinsel, eingerahmt von Wasser und Grün.',
+    'Church & classic':'Kirchlich & klassisch',
+    'Marry in a nearby church, then arrive for reception and celebration by the lake.':'Heiraten Sie in einer nahegelegenen Kirche und feiern Sie anschließend Empfang und Fest am See.',
+
+    /* spaces */
+    'Indoor, outdoor & weather-safe':'Drinnen, draußen & wettersicher',
+    'Beautiful in any weather':'Schön bei jedem Wetter',
+    'Outdoor':'Draußen',
+    'Indoor':'Drinnen',
+    'Rain-safe':'Wettersicher',
+    'On the terrace':'Auf der Terrasse',
+    'Celebrate under the open sky':'Feiern Sie unter freiem Himmel',
+    'The lakeside terrace is made for sun-lit receptions and warm evenings — sparkling wine in hand, the water just beyond the railing, string lights overhead as the sky turns gold.':'Die Terrasse am See ist gemacht für sonnige Empfänge und laue Abende — ein Glas Sekt in der Hand, das Wasser direkt hinter der Brüstung und Lichterketten über Ihnen, während der Himmel golden wird.',
+    'Aperitif & reception directly by the water':'Aperitif & Empfang direkt am Wasser',
+    'Golden-hour dining as the sun sets over the lake':'Dinner zur goldenen Stunde, während die Sonne über dem See untergeht',
+    'In the hall':'Im Saal',
+    'Elegant rooms, air-conditioned & divisible':'Elegante Räume, klimatisiert & teilbar',
+    'Our event rooms adapt to your guest count — open and grand, or divided into something intimate. Warm lighting, round tables and floral centrepieces set the scene for dinner and dancing.':'Unsere Veranstaltungsräume passen sich Ihrer Gästezahl an — offen und großzügig oder unterteilt für einen intimeren Rahmen. Warmes Licht, runde Tische und florale Tischdekorationen schaffen die perfekte Kulisse für Dinner und Tanz.',
+    'Flexible, divisible & air-conditioned spaces':'Flexible, teilbare & klimatisierte Räume',
+    'Scales from intimate dinners to large celebrations':'Von intimen Dinnern bis zu großen Feiern',
+    'Whatever the sky does':'Was auch immer der Himmel bringt',
+    'A beautiful plan B, always ready':'Ein schöner Plan B, immer bereit',
+    'Weather should never be a worry. Large windows keep the lake in view while you stay cosy inside — so a sudden shower simply becomes part of the story, never a problem.':'Das Wetter soll nie zur Sorge werden. Große Fenster halten den See im Blick, während Sie es sich drinnen gemütlich machen — so wird ein plötzlicher Regenschauer einfach Teil der Geschichte, nie ein Problem.',
+    'Seamless move indoors with the same elegance':'Nahtloser Umzug nach drinnen mit derselben Eleganz',
+    'Terrace flows directly into the banquet room':'Die Terrasse geht direkt in den Festsaal über',
+
+    /* packages / planning */
+    'Packages & planning support':'Pakete & Planungsbegleitung',
+    'We carry the details, you enjoy the day':'Wir kümmern uns um die Details, Sie genießen den Tag',
+    'Tell us your vision and we shape an all-inclusive package around it — clear, calm and tailored to your guest count and style.':'Erzählen Sie uns Ihre Vision und wir gestalten ein Rundum-sorglos-Paket darum herum — klar, entspannt und abgestimmt auf Ihre Gästezahl und Ihren Stil.',
+    'Viewing & first ideas':'Besichtigung & erste Ideen',
+    'Walk the island and terrace with us, and sketch the shape of your day.':'Gehen Sie mit uns über Insel und Terrasse und skizzieren Sie den Ablauf Ihres Tages.',
+    'Menu, drinks & tasting':'Menü, Getränke & Probeessen',
+    'Choose menus, buffets and beverage packages — with a trial dinner to taste it all.':'Wählen Sie Menüs, Buffets und Getränkepakete — mit einem Probeessen, bei dem Sie alles verkosten.',
+    'Décor, cake & music':'Deko, Torte & Musik',
+    'Decoration support, cake, plus DJ and live-band recommendations.':'Unterstützung bei der Dekoration, Torte sowie Empfehlungen für DJ und Live-Band.',
+    'Your day, handled':'Ihr Tag in besten Händen',
+    'On the day, our team manages timing, vendors and guests — start to finish.':'Am Tag selbst koordiniert unser Team Ablauf, Dienstleister und Gäste — von Anfang bis Ende.',
+    'Request a Package':'Paket anfragen',
+
+    /* offers */
+    'Wedding packages':'Hochzeitspakete',
+    'Choose the celebration that fits you':'Wählen Sie die Feier, die zu Ihnen passt',
+    'Three starting points, each fully tailored. Pick the closest fit and we shape the rest around your day.':'Drei Ausgangspunkte, jeder individuell gestaltet. Wählen Sie den, der Ihnen am nächsten kommt, und wir gestalten den Rest rund um Ihren Tag.',
+    'Intimate Wedding':'Intime Hochzeit',
+    'For close family & friends, up to ~30 guests':'Für die engste Familie & Freunde, bis zu ca. 30 Gäste',
+    'On request':'Auf Anfrage',
+    'tailored offer':'individuelles Angebot',
+    'Wedding-island ceremony':'Trauung auf der Hochzeitsinsel',
+    'Lakeside aperitif':'Aperitif am See',
+    '3-course dinner':'3-Gänge-Menü',
+    'Bridal-suite night':'Übernachtung in der Brautsuite',
+    'Classic Wedding Day':'Klassischer Hochzeitstag',
+    'The full lakeside wedding, ~30–80 guests':'Die komplette Hochzeit am See, ca. 30–80 Gäste',
+    'Ceremony & terrace reception':'Trauung & Empfang auf der Terrasse',
+    'Menu or festive buffet':'Menü oder festliches Buffet',
+    'Beverage package':'Getränkepaket',
+    'Décor & planning support':'Deko & Planungsbegleitung',
+    'Complete Wedding Weekend':'Komplettes Hochzeitswochenende',
+    'A grand celebration, 80–120+ guests':'Eine große Feier, 80–120+ Gäste',
+    'Full-day island wedding':'Ganztägige Hochzeit auf der Insel',
+    'Reception, dinner & party':'Empfang, Dinner & Party',
+    'Catering, drinks & cake':'Catering, Getränke & Torte',
+    'Room block & breakfast':'Zimmerkontingent & Frühstück',
+    'Request Individual Offer':'Individuelles Angebot anfragen',
+
+    /* dining */
+    'Menu, buffet & catering':'Menü, Buffet & Catering',
+    'Food your guests will talk about':'Essen, von dem Ihre Gäste noch lange sprechen werden',
+    'Seasonal regional and international cuisine from our own kitchen — plated menus, generous buffets and considered wine pairings.':'Saisonale regionale und internationale Küche aus unserer hauseigenen Küche — servierte Menüs, großzügige Buffets und durchdachte Weinbegleitung.',
+    'Plated menus':'Servierte Menüs',
+    'Multi-course seasonal menus, beautifully served.':'Mehrgängige saisonale Menüs, wunderschön serviert.',
+    'Festive buffets':'Festliche Buffets',
+    'Abundant, generous spreads for relaxed celebrations.':'Üppige, großzügige Buffets für entspannte Feiern.',
+    'Wine & drinks':'Wein & Getränke',
+    'Regional wines and beverage packages, perfectly paired.':'Regionale Weine und Getränkepakete, perfekt abgestimmt.',
+    'Cake & desserts':'Torte & Desserts',
+    'An elegant cake and sweet table to finish the evening.':'Eine elegante Torte und ein Sweet Table zum Abschluss des Abends.',
+    'From our own kitchen — tasted before your day':'Aus unserer eigenen Küche — vorab für Sie verkostet',
+
+    /* stay */
+    'Stay overnight':'Übernachten',
+    'Celebrate and stay in one place':'Feiern und übernachten an einem Ort',
+    'No taxis, no long drives home. Your guests celebrate late and simply walk to their rooms — then meet again for breakfast.':'Keine Taxis, keine lange Heimfahrt. Ihre Gäste feiern bis spät und gehen einfach auf ihre Zimmer — und treffen sich am Morgen zum Frühstück wieder.',
+    'Bridal Suite':'Brautsuite',
+    'A romantic suite for the newlyweds — the perfect end to your wedding day.':'Eine romantische Suite für das Brautpaar — der perfekte Abschluss Ihres Hochzeitstages.',
+    '2 guests':'2 Gäste',
+    'Lake view':'Seeblick',
+    'Breakfast':'Frühstück',
+    '/ night':'/ Nacht',
+    'Reserve':'Reservieren',
+    'Lake View':'Seeblick',
+    'Lake-View Room':'Zimmer mit Seeblick',
+    'Comfortable, friendly non-smoking rooms — some looking straight onto the water.':'Komfortable, freundliche Nichtraucherzimmer — einige mit direktem Blick aufs Wasser.',
+    'Free Wi-Fi':'Kostenloses WLAN',
+    'For guests':'Für Gäste',
+    'Guest Rooms':'Gästezimmer',
+    'A block of comfortable rooms so your whole party can stay the weekend together.':'Ein Kontingent komfortabler Zimmer, damit Ihre gesamte Gesellschaft das Wochenende gemeinsam verbringen kann.',
+    '1–3 guests':'1–3 Gäste',
+    'Parking':'Parkplatz',
+
+    /* location */
+    'The Blue Adriatic':'Die Blaue Adria',
+    'Right on the lake, central to everything':'Direkt am See, zentral zu allem',
+    'Easy motorway access':'Gute Autobahnanbindung',
+    'Get Directions':'Route planen',
+    'Show interactive map':'Interaktive Karte anzeigen',
+    'Loads Google Maps — third-party content (cookies may be set)':'Lädt Google Maps — Inhalte Dritter (es können Cookies gesetzt werden)',
+
+    /* story / testimonials */
+    'Loved by our couples':'Von unseren Paaren geliebt',
+    'In their own words':'In ihren eigenen Worten',
+    'Real weddings on the Blue Adriatic — ceremony, celebration and the morning after, all in one place.':'Echte Hochzeiten an der Blauen Adria — Trauung, Feier und der Morgen danach, alles an einem Ort.',
+    '“We married on the island as the sun set over the water — then celebrated, danced and stayed the night without leaving. Our guests still talk about it. Darstein didn’t just host our wedding, they carried it.”':'„Wir haben auf der Insel geheiratet, als die Sonne über dem Wasser unterging — und haben dann gefeiert, getanzt und übernachtet, ohne den Ort verlassen zu müssen. Unsere Gäste schwärmen noch heute davon. Darstein hat unsere Hochzeit nicht nur ausgerichtet, sondern getragen.“',
+    'Wedding on the island · June 2025':'Hochzeit auf der Insel · Juni 2025',
+    '“One place for the ceremony, the dinner, the party and the night after. We never had to move our guests around — everything simply flowed, and we got to be fully present at our own wedding.”':'„Ein Ort für die Trauung, das Dinner, die Party und die Nacht danach. Wir mussten unsere Gäste nie von A nach B bringen — alles floss einfach ineinander, und wir konnten bei unserer eigenen Hochzeit ganz präsent sein.“',
+    'Lakeside ceremony & reception · 2025':'Trauung & Empfang am See · 2025',
+    '“The team handled every detail so calmly that we could just enjoy the day. The terrace at golden hour, right on the lake, is something none of our guests will ever forget.”':'„Das Team hat sich um jedes Detail so souverän gekümmert, dass wir den Tag einfach genießen konnten. Die Terrasse zur goldenen Stunde, direkt am See, wird keiner unserer Gäste je vergessen.“',
+    'Terrace reception · 2024':'Empfang auf der Terrasse · 2024',
+
+    /* facts */
+    'At a glance':'Auf einen Blick',
+    'More than a wedding venue':'Mehr als eine Hochzeitslocation',
+    'Ceremony, reception, dinner, party, hotel rooms and breakfast — one destination, one team, no compromise.':'Trauung, Empfang, Dinner, Party, Hotelzimmer und Frühstück — ein Ziel, ein Team, keine Kompromisse.',
+    'A ceremony location surrounded by the lake — rare and unforgettable.':'Ein Trauort, umgeben vom See — selten und unvergesslich.',
+    'Hotel rooms':'Hotelzimmer',
+    'Overnight stays for you and your guests, some with lake view.':'Übernachtungen für Sie und Ihre Gäste, einige mit Seeblick.',
+    'In-house catering':'Catering aus eigenem Haus',
+    'Restaurant kitchen, menus, buffets and beverage packages.':'Restaurantküche, Menüs, Buffets und Getränkepakete.',
+    'Weather-safe':'Wettersicher',
+    'Indoor & outdoor spaces with a beautiful plan B, always.':'Innen- und Außenbereiche mit einem schönen Plan B, immer.',
+    'An experienced team guiding every step, calmly.':'Ein erfahrenes Team, das Sie ruhig durch jeden Schritt begleitet.',
+    'Parking & Wi-Fi':'Parkplatz & WLAN',
+    'On-site parking and free Wi-Fi for all your guests.':'Parkplätze vor Ort und kostenloses WLAN für alle Ihre Gäste.',
+    'Central location':'Zentrale Lage',
+    'Minutes from Mannheim, Ludwigshafen, Speyer & Heidelberg.':'Wenige Minuten von Mannheim, Ludwigshafen, Speyer & Heidelberg.',
+    'Morning after':'Der Morgen danach',
+    'A relaxed breakfast together to round off the celebration.':'Ein entspanntes gemeinsames Frühstück als Abschluss der Feier.',
+
+    /* inquiry form */
+    'Request a viewing':'Besichtigung anfragen',
+    'Let’s plan your':'Planen wir Ihren',
+    'day by the lake':'Tag am See',
+    'Tell us a little about your wedding and we’ll come back with availability, ideas and an offer — no pressure, just a friendly first step.':'Erzählen Sie uns ein wenig über Ihre Hochzeit und wir melden uns mit Verfügbarkeit, Ideen und einem Angebot zurück — ganz ohne Druck, einfach ein freundlicher erster Schritt.',
+    'Call us':'Rufen Sie uns an',
+    'Email':'E-Mail',
+    'Visit':'Besuchen Sie uns',
+    'Your names':'Ihre Namen',
+    'Jane & John':'Anna & Jonas',
+    'you@email.com':'name@email.de',
+    'Phone':'Telefon',
+    'Preferred date':'Wunschtermin',
+    'Guests':'Gäste',
+    'Up to 30':'Bis 30',
+    'Ceremony':'Trauung',
+    'Lakeside & terrace':'See & Terrasse',
+    'Civil':'Standesamtlich',
+    'Free / symbolic':'Frei / symbolisch',
+    'Indoor hall':'Festsaal',
+    'Not sure yet':'Noch unsicher',
+    'Tell us about your day':'Erzählen Sie uns von Ihrem Tag',
+    'Your vision, questions, anything on your mind…':'Ihre Vision, Fragen, alles, was Ihnen am Herzen liegt …',
+    'Send Wedding Inquiry':'Hochzeitsanfrage senden',
+    'We typically reply within one business day. Your details stay private.':'Wir antworten in der Regel innerhalb eines Werktags. Ihre Angaben bleiben vertraulich.',
+    'Thank you!':'Vielen Dank!',
+    'Your inquiry is on its way. We’ll be in touch very soon to plan your day by the lake.':'Ihre Anfrage ist unterwegs. Wir melden uns sehr bald bei Ihnen, um Ihren Tag am See zu planen.',
+
+    /* secondary services */
+    'When you’re not celebrating a wedding, Darstein is still here — for dinners, events, meetings and quiet escapes by the lake.':'Auch wenn Sie keine Hochzeit feiern, ist Darstein für Sie da — für Dinner, Veranstaltungen, Tagungen und ruhige Auszeiten am See.',
+    'Birthdays, anniversaries, baptisms & family festivities.':'Geburtstage, Jubiläen, Taufen & Familienfeste.',
+    'Enquire':'Anfragen',
+    'Restaurant-quality dining for your wedding and your guests — with a view over the water.':'Speisen in Restaurantqualität für Ihre Hochzeit und Ihre Gäste — mit Blick über das Wasser.',
+    'View dining':'Kulinarik ansehen',
+    'Modern meeting spaces, technology & conference catering.':'Moderne Tagungsräume, Technik & Tagungscatering.',
+    'Plan a meeting':'Tagung planen',
+    'After-parties, company parties and dancing into the night.':'After-Partys, Firmenfeiern und Tanz bis tief in die Nacht.',
+    'Celebrate':'Feiern',
+    'Romantic lakeside escapes, breakfast & nature on the doorstep.':'Romantische Auszeiten am See, Frühstück & Natur direkt vor der Tür.',
+    'Stay with us':'Bei uns übernachten',
+    'Give a stay, a dinner or a celebration by the lake.':'Verschenken Sie eine Übernachtung, ein Dinner oder eine Feier am See.',
+    'Buy a voucher':'Gutschein kaufen',
+
+    /* upcoming events */
+    'Upcoming Events':'Kommende Veranstaltungen',
+    'Join Us Beyond Weddings':'Erleben Sie mehr als Hochzeiten',
+    'Seasonal dining, live music and celebrations on the Blue Adriatic.':'Saisonale Genussabende, Live-Musik und Feiern an der Blauen Adria.',
+    'What’s On · 2026':'Programm · 2026',
+    'Dining':'Kulinarik',
+    'Live Music':'Live-Musik',
+    'Celebration':'Feier',
+    'Fri · 24 Jul 2026':'Fr · 24. Juli 2026',
+    'Lakeside Summer Wine Dinner':'Sommerliches Weindinner am See',
+    'Regional wines paired with a seasonal four-course menu on the terrace.':'Regionale Weine zu einem saisonalen Vier-Gänge-Menü auf der Terrasse.',
+    'Sat · 22 Aug 2026':'Sa · 22. August 2026',
+    'Live Jazz on the Terrace':'Live-Jazz auf der Terrasse',
+    'Sparkling wine and live jazz drifting over the lake into the evening.':'Sekt und Live-Jazz über dem Wasser, bis in den Abend hinein.',
+    'Sat · 19 Dec 2026':'Sa · 19. Dezember 2026',
+    'Festive Christmas Gala':'Festliche Weihnachtsgala',
+    'A candlelit gala dinner with seasonal menus to close the year in style.':'Ein festliches Galadinner bei Kerzenschein mit saisonalen Menüs zum stilvollen Jahresausklang.',
+    'Sun · 14 Feb 2027':'So · 14. Februar 2027',
+    'Valentine’s Lake Dinner':'Valentinsdinner am See',
+    'An intimate four-course dinner for two by the water.':'Ein intimes Vier-Gänge-Dinner zu zweit am Wasser.',
+    'View All Events':'Alle Veranstaltungen ansehen',
+
+    /* insta */
+    'Follow along':'Folgen Sie uns',
+    'Moments from the lake':'Momente vom See',
+    '@hoteldarstein — real ceremonies, dinners, rooms and golden-hour moments by the water.':'@hoteldarstein — echte Trauungen, Dinner, Zimmer und Momente zur goldenen Stunde am Wasser.',
+
+    /* footer CTA */
+    'Begin your story':'Beginnen Sie Ihre Geschichte',
+    'Ready to plan your wedding by the lake?':'Bereit, Ihre Hochzeit am See zu planen?',
+    'Book a viewing and walk the island, the terrace and the rooms with us — no pressure, just a warm first conversation.':'Buchen Sie eine Besichtigung und entdecken Sie mit uns die Insel, die Terrasse und die Zimmer — ganz ohne Druck, einfach ein herzliches erstes Gespräch.',
+    'Request Your Viewing':'Ihre Besichtigung anfragen',
+
+    /* footer */
+    'The wedding hotel on the Blue Adriatic in Altrip — where the ceremony, celebration, dinner and overnight stay all happen in one romantic place by the water.':'Das Hochzeitshotel an der Blauen Adria in Altrip — wo Trauung, Feier, Dinner und Übernachtung alle an einem romantischen Ort am Wasser stattfinden.',
+    'Weddings':'Hochzeiten',
+    'The Wedding Day':'Der Hochzeitstag',
+    'Ceremony Options':'Trauungsoptionen',
+    'Indoor & Outdoor':'Drinnen & draußen',
+    'Packages & Planning':'Pakete & Planung',
+    'Hotel & Events':'Hotel & Veranstaltungen',
+    'Rooms & Stay':'Zimmer & Übernachtung',
+    'Restaurant & Terrace':'Restaurant & Terrasse',
+    'Private Celebrations':'Private Feiern',
+    'Conferences & Seminars':'Tagungen & Seminare',
+    'Gift Vouchers':'Geschenkgutscheine',
+    'Wedding Island':'Hochzeitsinsel',
+    'Stay in touch':'In Kontakt bleiben',
+    'News, seasonal events and dates from Hotel Darstein — straight to your inbox.':'Neuigkeiten, saisonale Veranstaltungen und Termine vom Hotel Darstein — direkt in Ihr Postfach.',
+    'Your email address':'Ihre E-Mail-Adresse',
+    '© 2026 Hotel Darstein. All rights reserved.':'© 2026 Hotel Darstein. Alle Rechte vorbehalten.',
+    'Imprint':'Impressum',
+    'Privacy Policy':'Datenschutz',
+    'Cookie Settings':'Cookie-Einstellungen',
+
+    /* aria-labels & misc interactive */
+    'Open menu':'Menü öffnen',
+    'Close menu':'Menü schließen',
+    'Menu':'Menü',
+    'Hotel Darstein home':'Startseite Hotel Darstein',
+    'Events at Hotel Darstein':'Veranstaltungen im Hotel Darstein',
+    'Hero background style':'Hintergrundstil des Hero',
+    'Guest testimonials':'Gästestimmen',
+    'Previous testimonial':'Vorheriges Zitat',
+    'Next testimonial':'Nächstes Zitat',
+    'Choose testimonial':'Zitat auswählen',
+    'Testimonial 1':'Zitat 1',
+    'Testimonial 2':'Zitat 2',
+    'Testimonial 3':'Zitat 3',
+    '1 of 3':'1 von 3',
+    '2 of 3':'2 von 3',
+    '3 of 3':'3 von 3',
+    '5 out of 5 stars':'5 von 5 Sternen',
+    'Back to top':'Nach oben',
+    'Image viewer':'Bildbetrachter',
+    'Close':'Schließen',
+    'Previous':'Zurück',
+    'Next':'Weiter',
+    'Reserve the Bridal Suite':'Brautsuite reservieren',
+    'Reserve a Lake-View Room':'Zimmer mit Seeblick reservieren',
+    'Reserve Guest Rooms':'Gästezimmer reservieren',
+    'Email address':'E-Mail-Adresse',
+    'Subscribe':'Abonnieren',
+    'Wedding ceremony on the island':'Hochzeitstrauung auf der Insel',
+    'Chef plating a fine dining dish':'Koch richtet ein Gourmetgericht an',
+    'Romantic bridal suite':'Romantische Brautsuite',
+    'The Blue Adriatic lake':'Der See Blaue Adria',
+    'Bride and groom first dance':'Erster Tanz des Brautpaars',
+    'Couple by the lake':'Paar am See'
+  };
+
+  var TITLE_DE = 'Hotel Darstein — Das Hochzeitshotel an der Blauen Adria | Altrip';
+  var DESC_DE  = 'Ihre Traumhochzeit direkt am See. Geben Sie sich auf unserer Hochzeitsinsel das Ja-Wort, feiern Sie auf der Terrasse, speisen Sie in eleganten Sälen und lassen Sie Ihre Gäste übernachten — alles an einem romantischen Ort an der Blauen Adria in Altrip, nahe Mannheim, Ludwigshafen & Speyer.';
+
+  var DEBUG = location.search.indexOf('i18ndebug') >= 0;
+  var norm = function(s){ return (s||'').replace(/ /g,' ').replace(/\s+/g,' ').trim(); };
+  var root = document.documentElement;
+
+  /* mixed-markup elements keep both languages inline (data-en cached on first run) */
+  var special = [].slice.call(document.querySelectorAll('[data-de]'));
+  special.forEach(function(el){ if(el.getAttribute('data-en') === null) el.setAttribute('data-en', el.innerHTML); });
+
+  /* translatable text nodes — skip code, svg, the dev preview pill and mixed-markup subtrees */
+  var SKIP = 'script,style,svg,#megaSwitch,[data-de]';
+  var textNodes = [], origText = [];
+  var tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: function(node){
+      if(!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      var p = node.parentElement;
+      if(!p || p.closest(SKIP)) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  for(var nd = tw.nextNode(); nd; nd = tw.nextNode()){ textNodes.push(nd); origText.push(nd.nodeValue); }
+
+  /* translatable attributes */
+  var attrs = [];
+  [].slice.call(document.querySelectorAll('[placeholder],[aria-label]')).forEach(function(el){
+    if(el.closest('#megaSwitch')) return;
+    ['placeholder','aria-label'].forEach(function(a){
+      if(el.hasAttribute(a)) attrs.push({ el: el, a: a, orig: el.getAttribute(a) });
+    });
+  });
+
+  var titleEl = document.querySelector('title');
+  var descEl  = document.querySelector('meta[name="description"]');
+  var origTitle = titleEl ? titleEl.textContent : '';
+  var origDesc  = descEl ? descEl.getAttribute('content') : '';
+
+  function apply(lang){
+    var de = (lang === 'de'), miss = [];
+    for(var i = 0; i < textNodes.length; i++){
+      var node = textNodes[i], orig = origText[i];
+      if(!de){ if(node.nodeValue !== orig) node.nodeValue = orig; continue; }
+      var key = norm(orig), val = T[key];
+      if(val != null){
+        node.nodeValue = orig.match(/^\s*/)[0] + val + orig.match(/\s*$/)[0];
+      } else if(DEBUG && key){ miss.push(key); }
+    }
+    attrs.forEach(function(o){
+      if(!de){ o.el.setAttribute(o.a, o.orig); return; }
+      var v = T[norm(o.orig)];
+      if(v != null) o.el.setAttribute(o.a, v); else if(DEBUG) miss.push('@' + o.a + ': ' + norm(o.orig));
+    });
+    special.forEach(function(el){ el.innerHTML = de ? el.getAttribute('data-de') : el.getAttribute('data-en'); });
+    if(titleEl) titleEl.textContent = de ? TITLE_DE : origTitle;
+    if(descEl)  descEl.setAttribute('content', de ? DESC_DE : origDesc);
+    root.setAttribute('lang', de ? 'de' : 'en');
+    if(DEBUG && miss.length) console.warn('[i18n] ' + miss.length + ' untranslated:', miss);
+  }
+
+  function updateLinks(lang){
+    [].slice.call(document.querySelectorAll('.lang a[data-lang]')).forEach(function(a){
+      a.classList.toggle('on', a.getAttribute('data-lang') === lang);
+    });
+  }
+
+  function setLang(lang){
+    apply(lang);
+    updateLinks(lang);
+    try{ localStorage.setItem('darstein-lang', lang); }catch(e){}
+    document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
+  }
+
+  /* keep the dynamic packages tag in sync after a language change */
+  document.addEventListener('langchange', function(){
+    var tag = document.getElementById('offerTag'), on = document.querySelector('.offer.on');
+    if(tag && on){ var h = on.querySelector('h3'); if(h) tag.textContent = h.textContent; }
+  });
+
+  [].slice.call(document.querySelectorAll('.lang a[data-lang]')).forEach(function(a){
+    a.addEventListener('click', function(e){ e.preventDefault(); setLang(a.getAttribute('data-lang')); });
+  });
+
+  var saved = null; try{ saved = localStorage.getItem('darstein-lang'); }catch(e){}
+  setLang(saved === 'de' ? 'de' : 'en');
+})();
 </script>
 </body>
 </html>
